@@ -55,11 +55,10 @@ class ViewController: UIViewController {
     
     private let addButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1.0)
-        button.setTitle("+", for: .normal)
-        button.tintColor = .white
-        button.titleLabel?.font = .boldSystemFont(ofSize: 15)
-        button.layer.cornerRadius = 15
+        if let buttonImage = UIImage(named: "addButtonIcon") {
+            button.setBackgroundImage(buttonImage, for: .normal)
+        }
+        button.layer.cornerRadius = 17
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -116,7 +115,7 @@ class ViewController: UIViewController {
         // 버튼 오토레이아웃
         addButton.snp.makeConstraints {
             $0.bottom.equalTo(productUIView.snp.bottom).inset(16)
-            $0.trailing.equalTo(productUIView.snp.trailing).inset(16)
+            $0.trailing.equalTo(productUIView.snp.trailing).inset(8)
         }
         
     }
