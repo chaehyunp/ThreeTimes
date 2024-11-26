@@ -12,9 +12,10 @@ class ViewController: UIViewController {
     // 상품 이름 Label
     private let productLabel: UILabel = {
         let label = UILabel()
-        label.text = "피자붕어빵" // 상품명
+        label.text = "피자 붕어빵" // 상품명
         label.font = .systemFont(ofSize: 17)
-        label.textColor = .black
+        // #808080 색상을 UIColor로 변환하여 적용
+        label.textColor = UIColor(red: 0.503, green: 0.502, blue: 0.502, alpha: 1)
         return label
     }()
     
@@ -24,9 +25,9 @@ class ViewController: UIViewController {
         button.setTitle("−", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20)
         // #C6B2A5 색상을 UIColor로 변환하여 적용
-        button.backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1.0)
+        button.backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1)
         button.layer.cornerRadius = 15
-        button.tintColor = .black
+        button.tintColor = .white
         return button
     }()
     
@@ -34,7 +35,7 @@ class ViewController: UIViewController {
     private let quantityLabel: UILabel = {
         let label = UILabel()
         label.text = "2"
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 18)
         label.textAlignment = .center
         return label
     }()
@@ -47,16 +48,17 @@ class ViewController: UIViewController {
         // #C6B2A5 색상을 UIColor로 변환하여 적용
         button.backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1.0)
         button.layer.cornerRadius = 15
-        button.tintColor = .black
+        button.tintColor = .white
         return button
     }()
     
     // 가격 표시 Label
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "1,500원" // 가격 표시
+        label.text = "2,400원" // 가격 표시
         label.font = .systemFont(ofSize: 16)
-        label.textColor = .black
+        label.textColor = UIColor(red: 0.647, green: 0.647, blue: 0.647, alpha: 1)
+        label.textAlignment = .right
         return label
     }()
     
@@ -64,8 +66,7 @@ class ViewController: UIViewController {
     private let deleteButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("×", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.backgroundColor = .lightGray
+        button.titleLabel?.font = .systemFont(ofSize: 23)
         button.layer.cornerRadius = 15
         button.tintColor = .black
         return button
@@ -82,12 +83,12 @@ class ViewController: UIViewController {
         // StackView 생성
         let quantityStackView = UIStackView(arrangedSubviews: [minusButton, quantityLabel, plusButton])
         quantityStackView.axis = .horizontal
-        quantityStackView.spacing = 10
+        quantityStackView.spacing = 1
         quantityStackView.alignment = .center
         
         let mainStackView = UIStackView(arrangedSubviews: [productLabel, quantityStackView, priceLabel, deleteButton])
         mainStackView.axis = .horizontal
-        mainStackView.spacing = 30
+        mainStackView.spacing = 10
         mainStackView.alignment = .center
         mainStackView.distribution = .fillProportionally
         
@@ -97,7 +98,7 @@ class ViewController: UIViewController {
         // AutoLayout 설정!
         mainStackView.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(10) // 좌우 여백
+            make.leading.trailing.equalToSuperview().inset(17) // 좌우 여백
         }
         
         minusButton.snp.makeConstraints { make in
@@ -113,7 +114,7 @@ class ViewController: UIViewController {
         }
         
         deleteButton.snp.makeConstraints { make in
-            make.width.height.equalTo(30) // 삭제 버튼 크기
+            make.width.height.equalTo(35) // 삭제 버튼 크기
         }
     }
 }
