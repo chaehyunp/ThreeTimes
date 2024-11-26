@@ -11,44 +11,54 @@ import SnapKit
 class ViewController: UIViewController {
 
     let productUIView: UIView = {
+        
         let view = UIView()
-        view.backgroundColor = .black
-        view.layer.cornerRadius = 8
+        view.backgroundColor = .white
+        view.layer.cornerRadius = 6
         return view
     }()
     
     
     let productImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .gray
-        imageView.layer.cornerRadius = 8
+        imageView.backgroundColor = UIColor(red: 245.0 / 255.0, green: 245.0 / 255.0, blue: 245.0 / 255.0, alpha: 1.0)
+        imageView.layer.cornerRadius = 6
         return imageView
     }()
     
     let productNameLabel: UILabel = {
         let label = UILabel()
         label.text = "붕어빵"
-        label.backgroundColor = .gray
+        label.backgroundColor = .white
         label.textColor = .black
-        label.font = .systemFont(ofSize: 15)
+        label.font = .systemFont(ofSize: 14)
         label.textAlignment = .left
         return label
     }()
     
     let productPriceLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .gray
-        label.text = "1000원"
+        label.backgroundColor = .white
+        label.text = "1,000원"
         label.textColor = .black
-        label.font = .boldSystemFont(ofSize: 15)
+        label.font = .boldSystemFont(ofSize: 14)
         label.textAlignment = .left
         return label
     }()
     
+    let productLabelStackView: UIStackView = {
+        let sv = UIStackView()
+        sv.axis = .vertical
+        sv.spacing = 4
+        sv.alignment = .leading
+        return sv
+    }()
+    
     let addButton: UIButton = {
         let button = UIButton()
-        button.backgroundColor = .gray
+        button.backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1.0)
         button.setTitle("+", for: .normal)
+        button.tintColor = .white
         button.titleLabel?.font = .boldSystemFont(ofSize: 15)
         button.layer.cornerRadius = 15
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
@@ -58,7 +68,7 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .gray
         
         configureUI()
         
@@ -70,8 +80,11 @@ class ViewController: UIViewController {
         view.addSubview(productUIView)
         
         productUIView.addSubview(productImageView)
-        productUIView.addSubview(productNameLabel)
-        productUIView.addSubview(productPriceLabel)
+        
+        productLabelStackView.addArrangedSubview(productNameLabel)
+        productLabelStackView.addArrangedSubview(productPriceLabel)
+        
+        productUIView.addSubview(productLabelStackView)
         productUIView.addSubview(addButton)
         
     }
@@ -82,35 +95,28 @@ class ViewController: UIViewController {
         productUIView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(200)
             $0.leading.equalToSuperview().inset(30)
-            $0.height.equalTo(180)
-            $0.width.equalTo(150)
+            $0.height.equalTo(186)
+            $0.width.equalTo(173)
         }
         
         // 이미지 뷰 오토레이아웃
         productImageView.snp.makeConstraints {
-            $0.top.equalTo(productUIView.snp.top).inset(10)
-            $0.leading.equalTo(productUIView.snp.leading).inset(10)
-            $0.trailing.equalTo(productUIView.snp.trailing).inset(10)
-            $0.height.equalTo(100)
+            $0.top.equalTo(productUIView.snp.top).inset(12)
+            $0.leading.equalTo(productUIView.snp.leading).inset(12)
+            $0.trailing.equalTo(productUIView.snp.trailing).inset(12)
+            $0.height.equalTo(112)
         }
         
-        // 상품이름 오토레이아웃
-        productNameLabel.snp.makeConstraints {
-            $0.top.equalTo(productImageView.snp.bottom).offset(10)
-            $0.leading.equalToSuperview().inset(10)
-        }
-        
-        // 상품가격 오토레이아웃
-        productPriceLabel.snp.makeConstraints {
-            $0.bottom.equalToSuperview().inset(10)
-            $0.leading.equalToSuperview().inset(10)
-            // $0.top.equalTo(productNameLabel.snp.bottom).offset(10)
+        // 상품 이름,가격 스택뷰 오토레이아웃
+        productLabelStackView.snp.makeConstraints {
+            $0.bottom.equalTo(productUIView.snp.bottom).inset(12)
+            $0.leading.equalTo(productUIView.snp.leading).inset(8)
         }
         
         // 버튼 오토레이아웃
         addButton.snp.makeConstraints {
-            $0.bottom.equalTo(productUIView.snp.bottom).inset(10)
-            $0.trailing.equalTo(productUIView.snp.trailing).inset(10)
+            $0.bottom.equalTo(productUIView.snp.bottom).inset(16)
+            $0.trailing.equalTo(productUIView.snp.trailing).inset(16)
         }
         
     }
