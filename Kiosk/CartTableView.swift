@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CartTableView: UITableView, UITableViewDataSource {
+class CartTableView: UITableView, UITableViewDataSource {//셀과 상호작용하지 않고 스택뷰 내부 버튼과 상호작용하기에 델리게이트는 준수하지 않았음.
     var data: [String] = [] //추후 실제 데이터로 변경
     init() {
         super.init(frame: .zero, style: .plain)
@@ -22,24 +22,10 @@ class CartTableView: UITableView, UITableViewDataSource {
         self.dataSource = self
         self.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.identifier)
     }
-    //데이터 소스 / 비었을 때 처리
+    //데이터 소스
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if data.isEmpty {
-            var emptyLabel: UILabel {
-                let label = UILabel()
-                label.text = "장바구니가 비었습니다."
-                label.textAlignment = .center
-                label.textColor = .gray
-                return label
-            }
-            tableView.backgroundView = emptyLabel
-            tableView.separatorStyle = .none
-            return 0
-        } else {
-            tableView.backgroundView = nil
-            return data.count
-        }
-        
+        checkRowEmpty()
+        return data.count
     }
     //데이터 소스 - 셀 구성
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -49,5 +35,37 @@ class CartTableView: UITableView, UITableViewDataSource {
         let productData = data[indexPath.row]
         cell.configure(with: productData)
         return cell
+    }
+    //행 추가 메서드
+    func addProduct(_ product: String) {
+        let newIndex = data.count//.count로 마지막 인덱스 +1의 인덱스를 지정
+        data.append(product)//새로운 데이터 추가
+        self.insertRows(at: [IndexPath(row: newIndex, section: 0)], with: .automatic)//행 추가
+        self.checkRowEmpty()//장바구니가 채워졌다면 문구 삭제
+    }
+    //행 삭제 메서드
+    func removeProduct(at index: Int) {
+        guard index >= 0 && index < data.count else { return }//인덱스가 유효한지 체크
+        data.remove(at: index)//데이터 배열에서 삭제
+        self.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)//행 삭제
+        self.checkRowEmpty()//비어있는지 체크
+    }
+    //테이블이 비었을 때의 메시지 처리
+    private func checkRowEmpty() {
+        if data.isEmpty {
+            var emptyLabel: UILabel {
+                let label = UILabel()
+                label.text = "장바구니가 비었습니다."
+                label.textAlignment = .center
+                label.textColor = .gray
+                return label
+            }
+            self.backgroundView = emptyLabel
+            self.separatorStyle = .none
+            
+        } else {
+            self.backgroundView = nil
+            
+        }
     }
 }
