@@ -11,16 +11,17 @@ class CartTableViewCell: UITableViewCell {
     static let identifier: String = "CartTableViewCell"
     private let productRow: CartRowStackView = CartRowStackView(productName: "임시데이터", price: "임시데이터", quantity: "임시데이터") //솔님의 스택뷰
     
-    init(style: UITableViewCell.CellStyle = .default,
-                  reuseIdentifier: String?,
-                  productData: String) {//추후 실제 데이터로 변경
+    override init(style: UITableViewCell.CellStyle = .default,
+                  reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.addSubview(productRow)
+        setupConstraints()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     //테이블뷰 셀 세팅
     func setupInfoStack(data: String) {//추후 실제 데이터 타입으로 변경
         let cell = CartRowStackView(productName: data, price: data, quantity: data)//솔님이 작성한 스택뷰로 변경
@@ -31,4 +32,14 @@ class CartTableViewCell: UITableViewCell {
         //productRow의 데이터 구성
         productRow.updateData(productName: data, price: data, quantity: data)
     }
+    
+    private func setupConstraints() {
+            productRow.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                productRow.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),
+                productRow.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -8),
+                productRow.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+                productRow.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+            ])
+        }
 }
