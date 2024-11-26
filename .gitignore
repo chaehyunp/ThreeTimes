@@ -13,3 +13,6 @@
 
 ### Xcode Patch ###
 *.xcodeproj/*e
+
+## User settings
+xcuserdata/
