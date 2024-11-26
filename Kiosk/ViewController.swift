@@ -5,6 +5,7 @@
 
 import UIKit
 import SnapKit
+import SwiftUI
 
 class ViewController: UIViewController {
     
@@ -115,4 +116,17 @@ class ViewController: UIViewController {
             make.width.height.equalTo(30) // 삭제 버튼 크기
         }
     }
+}
+
+// UIViewControllerRepresentable
+struct ViewControllerPreview: UIViewControllerRepresentable {
+    func makeUIViewController(context: Context) -> UIViewController {
+        return ViewController()
+    }
+    
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+}
+
+#Preview("ViewController") {
+    ViewControllerPreview()
 }
