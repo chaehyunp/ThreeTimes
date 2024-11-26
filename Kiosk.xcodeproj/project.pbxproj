@@ -6,7 +6,14 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		7A1481872CF56B46009A2CF6 /* CartTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1481862CF56B21009A2CF6 /* CartTableView.swift */; };
+		7A1481AC2CF58A27009A2CF6 /* CartTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A1481AB2CF58A20009A2CF6 /* CartTableViewCell.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		7A1481862CF56B21009A2CF6 /* CartTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTableView.swift; sourceTree = "<group>"; };
+		7A1481AB2CF58A20009A2CF6 /* CartTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartTableViewCell.swift; sourceTree = "<group>"; };
 		834DD5B42CF4149A0039B002 /* Kiosk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiosk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -47,6 +54,8 @@
 			children = (
 				834DD5B62CF4149A0039B002 /* Kiosk */,
 				834DD5B52CF4149A0039B002 /* Products */,
+				7A1481862CF56B21009A2CF6 /* CartTableView.swift */,
+				7A1481AB2CF58A20009A2CF6 /* CartTableViewCell.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -132,6 +141,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7A1481AC2CF58A27009A2CF6 /* CartTableViewCell.swift in Sources */,
+				7A1481872CF56B46009A2CF6 /* CartTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
