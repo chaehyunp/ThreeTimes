@@ -58,7 +58,7 @@ class ViewController: UIViewController {
         if let buttonImage = UIImage(named: "addButtonIcon") {
             button.setBackgroundImage(buttonImage, for: .normal)
         }
-        button.layer.cornerRadius = 15
+        button.layer.cornerRadius = 17
         button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()
