@@ -22,7 +22,8 @@ class ViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("−", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.backgroundColor = .lightGray
+        // #C6B2A5 색상을 UIColor로 변환하여 적용
+        button.backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1.0)
         button.layer.cornerRadius = 15
         button.tintColor = .black
         return button
@@ -42,7 +43,8 @@ class ViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("+", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.backgroundColor = .lightGray
+        // #C6B2A5 색상을 UIColor로 변환하여 적용
+        button.backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1.0)
         button.layer.cornerRadius = 15
         button.tintColor = .black
         return button
