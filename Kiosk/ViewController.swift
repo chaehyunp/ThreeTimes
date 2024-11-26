@@ -9,9 +9,8 @@ import UIKit
 import SnapKit
 
 class ViewController: UIViewController {
-
-    let productUIView: UIView = {
-        
+    
+    private let productUIView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.layer.cornerRadius = 6
@@ -19,14 +18,14 @@ class ViewController: UIViewController {
     }()
     
     
-    let productImageView: UIImageView = {
+    private let productImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(red: 245.0 / 255.0, green: 245.0 / 255.0, blue: 245.0 / 255.0, alpha: 1.0)
         imageView.layer.cornerRadius = 6
         return imageView
     }()
     
-    let productNameLabel: UILabel = {
+    private let productNameLabel: UILabel = {
         let label = UILabel()
         label.text = "붕어빵"
         label.backgroundColor = .white
@@ -36,7 +35,7 @@ class ViewController: UIViewController {
         return label
     }()
     
-    let productPriceLabel: UILabel = {
+    private let productPriceLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = .white
         label.text = "1,000원"
@@ -46,7 +45,7 @@ class ViewController: UIViewController {
         return label
     }()
     
-    let productLabelStackView: UIStackView = {
+    private let productLabelStackView: UIStackView = {
         let sv = UIStackView()
         sv.axis = .vertical
         sv.spacing = 4
@@ -54,7 +53,7 @@ class ViewController: UIViewController {
         return sv
     }()
     
-    let addButton: UIButton = {
+    private let addButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1.0)
         button.setTitle("+", for: .normal)
@@ -75,7 +74,7 @@ class ViewController: UIViewController {
         setupProductUIView()
     }
     
-    func configureUI() {
+    private func configureUI() {
         
         view.addSubview(productUIView)
         
@@ -89,9 +88,10 @@ class ViewController: UIViewController {
         
     }
     
-    // 그리드 안에 들어갈 UI뷰 오토레이아웃
-    func setupProductUIView() {
+    // 컬렉션뷰 안에 들어갈 UI뷰 오토레이아웃
+    private func setupProductUIView() {
         
+        // UI뷰 오토레이아웃
         productUIView.snp.makeConstraints {
             $0.top.equalToSuperview().inset(200)
             $0.leading.equalToSuperview().inset(30)
@@ -121,11 +121,11 @@ class ViewController: UIViewController {
         
     }
     
-    @objc func addButtonTapped() {
+    @objc private func addButtonTapped() {
         print("상품이 추가되었습니다.")
         
     }
     
-
+    
 }
 
