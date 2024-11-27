@@ -18,7 +18,7 @@ class ButtonStack: UIStackView {
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    //버튼 스택 셋업
     private func setupStackView() {
         axis = .horizontal
         spacing = 10

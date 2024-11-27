@@ -34,7 +34,7 @@ class TotalPriceLabel: UIView {
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    //레이블과 레이아웃 셋업
     private func setupLabel() {
         [purchaseLabel, priceLabel].forEach { UILabel in
             addSubview(UILabel)

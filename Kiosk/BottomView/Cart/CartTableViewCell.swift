@@ -9,7 +9,7 @@ import UIKit
 
 
 class CartTableViewCell: UITableViewCell {
-    static let identifier: String = "CartTableViewCell"
+    static let identifier: String = "CartTableViewCell"//셀 재사용을 위한 식별자
     private let productRow: CartRowStackView = CartRowStackView() //솔님의 스택뷰
     
     override init(style: UITableViewCell.CellStyle = .default,
@@ -27,17 +27,16 @@ class CartTableViewCell: UITableViewCell {
         let cell = CartRowStackView()//솔님이 작성한 스택뷰로 변경
         contentView.addSubview(cell)
     }
-    
+    //productRow의 데이터 구성
     func configure(with data: String) {
-        //productRow의 데이터 구성
         productRow.updateData()
     }
-    
+    //테이블뷰 셋업
     private func setupTableView() {
         contentView.addSubview(productRow)
         setupLayout()
     }
-    
+    //셀의 레이아웃 설정
     private func setupLayout() {
             productRow.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([

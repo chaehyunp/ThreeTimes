@@ -15,7 +15,7 @@ class EmptyButton: UIButton  {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    //버튼 셋업
     func setupButton() {
         setTitle("취소하기", for: .normal)
         setTitleColor(.black, for: .normal)

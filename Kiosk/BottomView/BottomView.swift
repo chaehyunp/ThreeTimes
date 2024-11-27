@@ -19,21 +19,21 @@ class BottomView: UIView {
     init() {
         super.init(frame: .zero)
         setupBottomView()
-        setupLayout()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    //하단 뷰 셋업
     private func setupBottomView() {
         backgroundColor = .lightGray
         [cartView, buttons, priceLabel, quantityLabel].forEach {
             self.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
+        setupLayout()
     }
-    
+    //레이아웃 셋업
     private func setupLayout() {
         cartViewHeight = cartView.heightAnchor.constraint(equalToConstant: 50)
         NSLayoutConstraint.activate([
@@ -59,7 +59,7 @@ class BottomView: UIView {
             buttons.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
-    
+    //장바구니 높이 동적 변화를 위한 메서드
     func updateCartHeight() {
         cartView.layoutIfNeeded()
         let cartHeight = cartView.contentSize.height

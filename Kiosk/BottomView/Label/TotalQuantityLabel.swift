@@ -16,7 +16,7 @@ class TotalQuantityLabel: UILabel {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+    //레이블 셋업
     private func setupLabel() {
         text = "총 \(quantity)개"
         textColor = .black
