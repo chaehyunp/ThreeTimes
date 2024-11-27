@@ -60,19 +60,12 @@ class ViewController: UIViewController {
             button.setBackgroundImage(buttonImage, for: .normal)
         }
         button.layer.cornerRadius = 17
-        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+//        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()
     
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .gray
-        
-        configureUI()
-        
-        setupProductUIView()
-    }
+
     
     private func configureUI() {
         
@@ -194,10 +187,15 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+//        view.backgroundColor = .white
+        view.backgroundColor = .gray
         // 가독성 향상!
         setupUI()
+        
+        configureUI()
+        setupProductUIView()
     }
+
     
     private func setupUI() {
         // StackView 생성
@@ -239,15 +237,15 @@ class ViewController: UIViewController {
     }
 }
 
-// UIViewControllerRepresentable
-struct ViewControllerPreview: UIViewControllerRepresentable {
-    func makeUIViewController(context: Context) -> UIViewController {
-        return ViewController()
-    }
-    
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
-}
-
-#Preview("ViewController") {
-    ViewControllerPreview()
-}
+//// UIViewControllerRepresentable
+//struct ViewControllerPreview: UIViewControllerRepresentable {
+//    func makeUIViewController(context: Context) -> UIViewController {
+//        return ViewController()
+//    }
+//    
+//    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+//}
+//
+//#Preview("ViewController") {
+//    ViewControllerPreview()
+//}
