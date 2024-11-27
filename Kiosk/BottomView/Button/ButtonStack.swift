@@ -29,5 +29,10 @@ class ButtonStack: UIStackView {
             addArrangedSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
+        
+        NSLayoutConstraint.activate([
+            emptyButton.heightAnchor.constraint(equalToConstant: 50),
+            purchaseButton.heightAnchor.constraint(equalToConstant: 50)
+        ])
     }
 }

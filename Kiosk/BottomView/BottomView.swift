@@ -25,6 +25,7 @@ class BottomView: UIView {
     }
     
     private func setupBottomView() {
+        backgroundColor = .lightGray
         [cartView, buttons].forEach {
             self.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
@@ -35,7 +36,7 @@ class BottomView: UIView {
         cartViewHeight = cartView.heightAnchor.constraint(equalToConstant: 50)
         NSLayoutConstraint.activate([
             //장바구니 레이아웃
-            cartView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20),
+            cartView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
             cartView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             cartView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             cartViewHeight,

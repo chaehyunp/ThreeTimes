@@ -22,10 +22,9 @@ class ViewController: UIViewController {
         bottomView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            bottomView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            bottomView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             bottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            bottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            bottomView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
+            bottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
         ])
     }
     //임시 추가 삭제 버튼들
