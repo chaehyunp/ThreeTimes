@@ -10,11 +10,13 @@ import UIKit
 
 class BottomView: UIView {
     let cartView: CartTableView = CartTableView()
-    private var cartViewHeight: NSLayoutConstraint!// 높이 동적 변화를 위한 프로퍼티
+    let buttons: ButtonStack = ButtonStack()
+    
+    private var cartViewHeight: NSLayoutConstraint!// 카트의 높이 동적 변화를 위한 프로퍼티
     
     init() {
         super.init(frame: .zero)
-        setupCartTableView()
+        setupBottomView()
         setupLayout()
     }
     
@@ -22,20 +24,27 @@ class BottomView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupCartTableView() {
-        self.addSubview(cartView)
-        cartView.translatesAutoresizingMaskIntoConstraints = false
-        
-        
+    private func setupBottomView() {
+        [cartView, buttons].forEach {
+            self.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
     }
     
     private func setupLayout() {
-        cartViewHeight = cartView.heightAnchor.constraint(equalToConstant: 200)
+        cartViewHeight = cartView.heightAnchor.constraint(equalToConstant: 50)
         NSLayoutConstraint.activate([
+            //장바구니 레이아웃
             cartView.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 20),
             cartView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             cartView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
-            cartViewHeight
+            cartViewHeight,
+            
+            //버튼 레이아웃
+            buttons.topAnchor.constraint(equalTo: cartView.bottomAnchor, constant: 20),
+            buttons.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            buttons.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            buttons.bottomAnchor.constraint(equalTo: self.bottomAnchor)
         ])
     }
     

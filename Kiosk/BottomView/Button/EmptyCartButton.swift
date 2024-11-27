@@ -17,11 +17,13 @@ class EmptyButton: UIButton  {
     }
     
     func setupButton() {
-        setTitle("결제하기", for: .normal)
-        titleLabel?.font = .systemFont(ofSize: 20)
+        setTitle("취소하기", for: .normal)
+        setTitleColor(.black, for: .normal)
+        setTitleColor(.gray, for: .highlighted)
+        titleLabel?.font = .systemFont(ofSize: 16)
         backgroundColor = .white
         layer.cornerRadius = 15
-        tintColor = .white
+        tintColor = .black
         //검정 테두리 추가
         layer.borderColor = UIColor.black.cgColor
         layer.borderWidth = 2

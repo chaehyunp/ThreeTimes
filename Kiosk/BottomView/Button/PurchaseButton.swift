@@ -18,7 +18,9 @@ class PurchaseButton: UIButton  {
     
     func setupButton() {
         setTitle("결제하기", for: .normal)
-        titleLabel?.font = .systemFont(ofSize: 20)
+        setTitleColor(.white, for: .normal)
+        setTitleColor(.lightGray, for: .highlighted)
+        titleLabel?.font = .systemFont(ofSize: 16)
         backgroundColor = UIColor(red: 226/255, green: 114/255, blue: 0/255, alpha: 1.0)
         layer.cornerRadius = 15
         tintColor = .white
