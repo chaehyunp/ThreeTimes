@@ -19,6 +19,7 @@ class CartTableView: UITableView, UITableViewDataSource {//셀과 상호작용�
     }
     //테이블뷰 셋업
     private func setupTableView() {
+        self.isScrollEnabled = false //스크롤 비활성화
         self.dataSource = self
         self.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.identifier)
     }

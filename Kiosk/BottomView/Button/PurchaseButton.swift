@@ -17,11 +17,10 @@ class PurchaseButton: UIButton  {
     }
     
     func setupButton() {
-        setTitle("+", for: .normal)
+        setTitle("결제하기", for: .normal)
         titleLabel?.font = .systemFont(ofSize: 20)
-        backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1.0)
+        backgroundColor = UIColor(red: 226/255, green: 114/255, blue: 0/255, alpha: 1.0)
         layer.cornerRadius = 15
         tintColor = .white
     }
-    
 }
