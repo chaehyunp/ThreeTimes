@@ -8,7 +8,7 @@
 import UIKit
 
 class ViewController: UIViewController {
-    private let cartTableView = CartTableView()
+    private let bottomView = BottomView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,19 +16,19 @@ class ViewController: UIViewController {
         setupCartTableView()
         setupButtons()
     }
-    
+    //추후 레이아웃 맞춰야 함.
     private func setupCartTableView() {
-        view.addSubview(cartTableView)
-        cartTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(bottomView)
+        bottomView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            cartTableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            cartTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            cartTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            cartTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
+            bottomView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            bottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            bottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            bottomView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -100)
         ])
     }
-    
+    //임시 추가 삭제 버튼들
     private func setupButtons() {
         let addButton = UIButton(type: .system)
         addButton.setTitle("상품 추가", for: .normal)
@@ -48,19 +48,21 @@ class ViewController: UIViewController {
         buttonStack.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            buttonStack.topAnchor.constraint(equalTo: cartTableView.bottomAnchor, constant: 20),
+            buttonStack.topAnchor.constraint(equalTo: bottomView.bottomAnchor, constant: 20),
             buttonStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
-    
+    //셀 추가 메서드 연결
     @objc private func addProduct() {
-        let newProduct = "상품 \(cartTableView.data.count + 1)"
-        cartTableView.addProduct(newProduct)
+        let newProduct = "상품 \(bottomView.cartView.data.count + 1)"//새로운 셀 데이터
+        bottomView.cartView.addProduct(newProduct)
+        bottomView.updateCartHeight()
     }
-    
+    //셀 삭제 메서드 연결
     @objc private func removeLastProduct() {
-        guard !cartTableView.data.isEmpty else { return }
-        cartTableView.removeProduct(at: cartTableView.data.count - 1)
+        guard !bottomView.cartView.data.isEmpty else { return }
+        bottomView.cartView.removeProduct(at: bottomView.cartView.data.count - 1)
+        bottomView.updateCartHeight()
     }
 }
 

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CartTableView: UITableView, UITableViewDataSource {//셀과 상호작용하지 않고 스택뷰 내부 버튼과 상호작용하기에 델리게이트는 준수하지 않았음.
+class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     var data: [String] = [] //추후 실제 데이터로 변경
     init() {
         super.init(frame: .zero, style: .plain)
