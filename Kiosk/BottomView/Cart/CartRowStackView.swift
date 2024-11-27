@@ -4,7 +4,7 @@
 //
 //  Created by 박진홍 on 11/27/24.
 //
-//임시 스택뷰 데이터
+//솔님이 작성해주신 스택뷰
 import UIKit
 import SnapKit
 
