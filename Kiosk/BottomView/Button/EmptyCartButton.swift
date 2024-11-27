@@ -20,7 +20,7 @@ class EmptyButton: UIButton  {
         setTitle("취소하기", for: .normal)
         setTitleColor(.black, for: .normal)
         setTitleColor(.gray, for: .highlighted)
-        titleLabel?.font = .systemFont(ofSize: 16)
+        titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         backgroundColor = .white
         layer.cornerRadius = 15
         tintColor = .black

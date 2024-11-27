@@ -15,8 +15,7 @@ class CartTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle = .default,
                   reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        contentView.addSubview(productRow)
-        setupConstraints()
+        setupTableView()
     }
     
     required init?(coder: NSCoder) {
@@ -34,7 +33,12 @@ class CartTableViewCell: UITableViewCell {
         productRow.updateData()
     }
     
-    private func setupConstraints() {
+    private func setupTableView() {
+        contentView.addSubview(productRow)
+        setupLayout()
+    }
+    
+    private func setupLayout() {
             productRow.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 productRow.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 8),

@@ -17,12 +17,6 @@ class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    //테이블뷰 셋업
-    private func setupTableView() {
-        self.isScrollEnabled = false //스크롤 비활성화
-        self.dataSource = self
-        self.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.identifier)
-    }
     //데이터 소스
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         checkRowEmpty()
@@ -50,6 +44,14 @@ class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         data.remove(at: index)//데이터 배열에서 삭제
         self.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)//행 삭제
         self.checkRowEmpty()//비어있는지 체크
+    }
+    //테이블뷰 셋업
+    private func setupTableView() {
+        layer.cornerRadius = 15
+        layer.masksToBounds = true
+        self.isScrollEnabled = false //스크롤 비활성화
+        self.dataSource = self
+        self.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.identifier)
     }
     //테이블이 비었을 때의 메시지 처리
     private func checkRowEmpty() {

@@ -11,6 +11,8 @@ import UIKit
 class BottomView: UIView {
     let cartView: CartTableView = CartTableView()
     let buttons: ButtonStack = ButtonStack()
+    let priceLabel: TotalPriceLabel = TotalPriceLabel()
+    let quantityLabel: TotalQuantityLabel = TotalQuantityLabel()
     
     private var cartViewHeight: NSLayoutConstraint!// 카트의 높이 동적 변화를 위한 프로퍼티
     
@@ -26,7 +28,7 @@ class BottomView: UIView {
     
     private func setupBottomView() {
         backgroundColor = .lightGray
-        [cartView, buttons].forEach {
+        [cartView, buttons, priceLabel, quantityLabel].forEach {
             self.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -35,14 +37,23 @@ class BottomView: UIView {
     private func setupLayout() {
         cartViewHeight = cartView.heightAnchor.constraint(equalToConstant: 50)
         NSLayoutConstraint.activate([
+            //수량 레이아웃
+            quantityLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            quantityLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            
             //장바구니 레이아웃
-            cartView.topAnchor.constraint(equalTo: self.topAnchor, constant: 20),
+            cartView.topAnchor.constraint(equalTo: quantityLabel.bottomAnchor, constant: 20),
             cartView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             cartView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             cartViewHeight,
             
+            //금액 레이아웃
+            priceLabel.topAnchor.constraint(equalTo: cartView.bottomAnchor, constant: 20),
+            priceLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
+            priceLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
+            
             //버튼 레이아웃
-            buttons.topAnchor.constraint(equalTo: cartView.bottomAnchor, constant: 20),
+            buttons.topAnchor.constraint(equalTo: priceLabel.bottomAnchor, constant: 40),
             buttons.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 16),
             buttons.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -16),
             buttons.bottomAnchor.constraint(equalTo: self.bottomAnchor)
