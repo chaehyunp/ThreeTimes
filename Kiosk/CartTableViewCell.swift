@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 class CartTableViewCell: UITableViewCell {
     static let identifier: String = "CartTableViewCell"
     private let productRow: CartRowStackView = CartRowStackView(productName: "임시데이터", price: "임시데이터", quantity: "임시데이터") //솔님의 스택뷰
