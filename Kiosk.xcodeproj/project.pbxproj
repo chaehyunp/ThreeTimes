@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		7ADF89192CF6BFEB006AF0BD /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7ADF89182CF6BFEB006AF0BD /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		834DD5B42CF4149A0039B002 /* Kiosk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kiosk.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +40,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7ADF89192CF6BFEB006AF0BD /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +83,7 @@
 			);
 			name = Kiosk;
 			packageProductDependencies = (
+				7ADF89182CF6BFEB006AF0BD /* SnapKit */,
 			);
 			productName = Kiosk;
 			productReference = 834DD5B42CF4149A0039B002 /* Kiosk.app */;
@@ -107,6 +113,9 @@
 			);
 			mainGroup = 834DD5AB2CF4149A0039B002;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				7ADF89172CF6BFEB006AF0BD /* XCRemoteSwiftPackageReference "SnapKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 834DD5B52CF4149A0039B002 /* Products */;
 			projectDirPath = "";
@@ -145,6 +154,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZS9874H9ND;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Kiosk/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -172,6 +182,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ZS9874H9ND;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Kiosk/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -333,6 +344,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7ADF89172CF6BFEB006AF0BD /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7ADF89182CF6BFEB006AF0BD /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7ADF89172CF6BFEB006AF0BD /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 834DD5AC2CF4149A0039B002 /* Project object */;
 }
