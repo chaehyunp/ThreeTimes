@@ -15,17 +15,17 @@ class CartRowStackView: UIStackView {
         let label = UILabel()
         label.text = "피자 붕어빵"
         label.font = .systemFont(ofSize: 17)
-        label.textColor = UIColor(red: 0.503, green: 0.502, blue: 0.502, alpha: 1)
+        label.textColor = UIColor(named: "500")
         return label
     }()
     
     private let minusButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("−", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1)
-        button.layer.cornerRadius = 15
-        button.tintColor = .white
+        let button = UIButton()
+        if let buttonImage = UIImage(named: "IcMinus") {
+              button.setBackgroundImage(buttonImage, for: .normal)
+            }
+            button.clipsToBounds = true
+            button.imageView?.contentMode = .scaleAspectFill
         return button
     }()
     
@@ -39,29 +39,30 @@ class CartRowStackView: UIStackView {
     
     private let plusButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("+", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1.0)
-        button.layer.cornerRadius = 15
-        button.tintColor = .white
+        if let buttonImage = UIImage(named: "IcPlus") {
+              button.setBackgroundImage(buttonImage, for: .normal)
+            }
+            button.clipsToBounds = true
+            button.imageView?.contentMode = .scaleAspectFill
         return button
     }()
     
     private let priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "2,400원"
+        label.text = "2,400" + NSLocalizedString("won", comment: "")
         label.font = .systemFont(ofSize: 16)
-        label.textColor = UIColor(red: 0.647, green: 0.647, blue: 0.647, alpha: 1)
+        label.textColor = UIColor(named: "600")
         label.textAlignment = .right
         return label
     }()
     
     private let deleteButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("×", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 23)
-        button.layer.cornerRadius = 15
-        button.tintColor = .black
+        if let buttonImage = UIImage(named: "IcDelete") {
+              button.setBackgroundImage(buttonImage, for: .normal)
+            }
+            button.clipsToBounds = true
+            button.imageView?.contentMode = .scaleAspectFill
         return button
     }()
     
