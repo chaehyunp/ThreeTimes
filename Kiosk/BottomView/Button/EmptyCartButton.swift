@@ -7,6 +7,7 @@
 import UIKit
 
 class EmptyButton: UIButton  {
+    var buttonTapped: (() -> Void)?
     init() {
         super.init(frame: .zero)
         setupButton()
@@ -28,5 +29,13 @@ class EmptyButton: UIButton  {
         layer.borderColor = UIColor.black.cgColor
         layer.borderWidth = 2
         layer.cornerRadius = 15
+        //클로저콜백
+        self.addTarget(self, action: #selector(emptyButtonTapped), for: .touchUpInside)
+    }
+    
+    
+    
+    @objc private func emptyButtonTapped() {
+        buttonTapped?()
     }
 }

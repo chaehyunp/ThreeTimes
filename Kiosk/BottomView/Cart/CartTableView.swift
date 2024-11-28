@@ -48,13 +48,18 @@ class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         self.checkRowEmpty()//장바구니가 채워졌다면 문구 삭제
         
     }
-    //행 삭제 메서드
-    func removeProduct(at index: Int) {
-        guard index >= 0 && index < data.count else { return }//인덱스가 유효한지 체크
-        data.remove(at: index)//데이터 배열에서 삭제
-        self.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)//행 삭제
-        self.checkRowEmpty()//비어있는지 체크
+    //테이블 뷰 비우기
+    func emptyCart() {
+        data.removeAll()
+        self.reloadData()
     }
+    //행 삭제 메서드
+//    func removeProduct(at index: Int) {
+//        guard index >= 0 && index < data.count else { return }//인덱스가 유효한지 체크
+//        data.remove(at: index)//데이터 배열에서 삭제
+//        self.deleteRows(at: [IndexPath(row: index, section: 0)], with: .automatic)//행 삭제
+//        self.checkRowEmpty()//비어있는지 체크
+//    }
     //테이블뷰 셋업
     private func setupTableView() {
         layer.cornerRadius = 15

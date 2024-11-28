@@ -90,6 +90,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 self.bottomView.cartView.reloadRows(at: [indexPath], with: .automatic) // 특정 셀만 갱신
             }
         }
+        bottomView.buttons.emptyButtonTapped = {
+            [weak self] in
+            self?.bottomView.cartView.emptyCart()
+        }
         bottomView.snp.makeConstraints{ make in
             make.top.equalTo(pageControl.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
