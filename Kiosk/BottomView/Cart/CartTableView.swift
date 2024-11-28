@@ -64,7 +64,7 @@ class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         self.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.identifier)
     }
     //테이블이 비었을 때 배경에 레이블 띄움
-    private func checkRowEmpty() {
+    func checkRowEmpty() {
         if data.isEmpty {
             var emptyLabel: UILabel {
                 let label = UILabel()
