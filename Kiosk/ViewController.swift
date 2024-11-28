@@ -81,7 +81,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 break
             }
 //             UI 업데이트
-            calculateQuantity()
+            updatePriceAndQuantity()
             if action == "delete" || self.bottomView.cartView.data.isEmpty {
                 self.bottomView.cartView.reloadData() // 전체 갱신
                
@@ -277,10 +277,21 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         pageControl.currentPage = Int(pageIndex)
     }
     // MARK: button method
+    //금액, 수량 반영
+    private func updatePriceAndQuantity() {
+        self.calculateTotalPrice()
+        self.calculateTotalQuantity()
+    }
     //총 수량 계산
-    private func calculateQuantity() {
+    private func calculateTotalQuantity() {
         let totalQuantity = self.bottomView.cartView.data.map { $0.quantity }.reduce(0, +)
         self.bottomView.quantityLabel.updateLabel(to: totalQuantity)
+        calculateTotalPrice()
+    }
+    //총 금액 계산
+    private func calculateTotalPrice() {
+        let totalPrice = self.bottomView.cartView.data.map { $0.price }.reduce(0, +)
+        self.bottomView.priceLabel.updateLabel(to: totalPrice)
     }
     //상품 추가
     private func addProduct(product: Product) {
@@ -295,7 +306,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             // 존재하지 않는 경우, 새로운 상품 추가
             bottomView.cartView.addProduct(newProduct)
         }
-        calculateQuantity()
+        updatePriceAndQuantity()
         bottomView.updateCartHeight()
     }
     //금액 계산
