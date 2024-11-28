@@ -25,4 +25,5 @@ class PurchaseButton: UIButton  {
         layer.cornerRadius = 15
         tintColor = .white
     }
+    
 }

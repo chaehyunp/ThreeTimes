@@ -6,12 +6,22 @@
 //
 import UIKit
 
+protocol ButtonStackDelegate: AnyObject {
+    func purchaseButtonTapped()
+}
+
 class ButtonStack: UIStackView {
+    weak var delegate: ButtonStackDelegate?
+    @objc private func buttonTapped() {
+        delegate?.purchaseButtonTapped()
+    }
+    
     let emptyButton: EmptyButton = EmptyButton()
     let purchaseButton: PurchaseButton = PurchaseButton()
     
     init() {
         super.init(frame: .zero)
+        purchaseButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
         setupStackView()
     }
     
