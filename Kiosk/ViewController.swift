@@ -65,6 +65,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 //                }
             case "delete":
                 self.bottomView.cartView.data.remove(at: index)
+                if self.bottomView.cartView.data.count != 0 {
+                    bottomView.cartView.reloadData()
+                }
+                bottomView.cartView.checkRowEmpty()
+                bottomView.updateCartHeight()
             default:
                 break
             }
