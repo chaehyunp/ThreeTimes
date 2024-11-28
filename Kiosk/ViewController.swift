@@ -258,17 +258,24 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 //        NSLayoutConstraint.activate([
 //            buttonStack.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 20),
 //            buttonStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-//        ])
-//    }
+    //        ])
+    //    }
     
     //셀 추가 메서드 연결
     private func addProduct(product: Product) {
         let newProduct = CartData(product: product)//새로운 셀 데이터
-        bottomView.cartView.addProduct(newProduct)
+        if let existingIndex = bottomView.cartView.data.firstIndex(where: { $0.product.name == product.name }) {
+            // 이미 존재하는 경우, 해당 CartData의 quantity를 증가
+            bottomView.cartView.data[existingIndex].quantity += 1
+            bottomView.cartView.reloadData()
+        } else {
+            // 존재하지 않는 경우, 새로운 상품 추가
+            bottomView.cartView.addProduct(newProduct)
+        }
         bottomView.updateCartHeight()
     }
-//    //셀 삭제 메서드 연결
-//    @objc private func removeLastProduct() {
+    //    //셀 삭제 메서드 연결
+    //    @objc private func removeLastProduct() {
 //        guard !bottomView.cartView.data.isEmpty else { return }
 //        bottomView.cartView.removeProduct(at: bottomView.cartView.data.count - 1)
 //        bottomView.updateCartHeight()
