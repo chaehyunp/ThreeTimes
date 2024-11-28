@@ -14,7 +14,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "00")
         
         setupNavigationBar()
         setupSegmentedControl()
@@ -52,8 +52,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         layout.itemSize = CGSize(width: view.frame.width, height: 300)
 
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+
         collectionView.isPagingEnabled = true
         collectionView.showsHorizontalScrollIndicator = false
+        collectionView.backgroundColor = UIColor(named: "100")
+
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(PageCell.self, forCellWithReuseIdentifier: PageCell.identifier)
@@ -136,8 +139,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 
 // MARK: - Custom Page Cell
 class PageCell: UICollectionViewCell {
-    static let identifier = "PageCell"
-
+  
+        static let identifier = "PageCell"
+  
         private let productUIView = UIView()
         private let mainStackView = UIStackView()
         
@@ -154,7 +158,7 @@ class PageCell: UICollectionViewCell {
         required init?(coder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
-
+  
         private func setupCell() {
             contentView.addSubview(productUIView)
             productUIView.snp.makeConstraints { make in
@@ -177,39 +181,39 @@ class PageCell: UICollectionViewCell {
             // Configure each UI component here (productImageView, productNameLabel, productPriceLabel, addButton)
         }
 
-    func configure(with products: [Product]) {
-        // 기존에 추가된 뷰 제거
-        mainStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+       func configure(with products: [Product]) {
+            // 기존에 추가된 뷰 제거
+            mainStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-        // 최대 4개의 제품을 2열 2행으로 배치
-        let rows = 2
-        let columns = 2
-        let totalItems = min(products.count, rows * columns)
+            // 최대 4개의 제품을 2열 2행으로 배치
+            let rows = 2
+            let columns = 2
+            let totalItems = min(products.count, rows * columns)
 
-        for rowIndex in 0..<rows {
-            // 각 행을 위한 수평 스택 뷰 생성
-            let rowStackView = UIStackView()
-            rowStackView.axis = .horizontal
-            rowStackView.spacing = 16
-            rowStackView.distribution = .fillEqually
+            for rowIndex in 0..<rows {
+                // 각 행을 위한 수평 스택 뷰 생성
+                let rowStackView = UIStackView()
+                rowStackView.axis = .horizontal
+                rowStackView.spacing = 16
+                rowStackView.distribution = .fillEqually
 
-            for columnIndex in 0..<columns {
-                let itemIndex = rowIndex * columns + columnIndex
-                if itemIndex < totalItems {
-                    // 제품에 대한 네모 박스 생성
-                    let productView = createProductView(for: products[itemIndex])
-                    rowStackView.addArrangedSubview(productView)
-                } else {
-                    // 빈 뷰 추가 (필요 시)
-                    let emptyView = UIView()
-                    rowStackView.addArrangedSubview(emptyView)
+                for columnIndex in 0..<columns {
+                    let itemIndex = rowIndex * columns + columnIndex
+                    if itemIndex < totalItems {
+                        // 제품에 대한 네모 박스 생성
+                        let productView = createProductView(for: products[itemIndex])
+                        rowStackView.addArrangedSubview(productView)
+                    } else {
+                        // 빈 뷰 추가 (필요 시)
+                        let emptyView = UIView()
+                        rowStackView.addArrangedSubview(emptyView)
+                    }
                 }
+
+                mainStackView.addArrangedSubview(rowStackView)
             }
-
-            mainStackView.addArrangedSubview(rowStackView)
         }
-    }
-
+  
     // MARK: - Helper: Product View 생성
     private func createProductView(for product: Product) -> UIView {
         // 전체 상품 뷰 설정
@@ -220,15 +224,29 @@ class PageCell: UICollectionViewCell {
         productView.layer.borderColor = UIColor.lightGray.cgColor
         productView.clipsToBounds = true
 
+      // Mark: - Dev 수정 내용 확인 필요 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         // 이미지 뷰 설정
+//     // UI Components
+//     private let productUIView: UIView = {
+//         let view = UIView()
+//         view.backgroundColor = UIColor(named: "00")
+//         view.layer.cornerRadius = 6
+//         view.layer.borderColor = UIColor.lightGray.cgColor
+//         view.layer.borderWidth = 1
+//         return view
+//     }()
+    
+//     private let productImageView: UIImageView = {
+
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor(red: 245.0 / 255.0, green: 245.0 / 255.0, blue: 245.0 / 255.0, alpha: 1.0)
+        imageView.backgroundColor = UIColor(named: "100")
         imageView.layer.cornerRadius = 6
         imageView.clipsToBounds = true
         imageView.image = UIImage(named: "sampleImage") // 예시 이미지
 
         // 라벨 설정
         let label = UILabel()
+
         label.text = "\(product.name)\n\(product.price)"
         label.backgroundColor = .white
         label.textAlignment = .left
@@ -237,12 +255,39 @@ class PageCell: UICollectionViewCell {
         label.numberOfLines = 0
 
         // 버튼 설정
+      // Mark: - Dev 수정 내용 확인 필요 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//         label.backgroundColor = UIColor(named: "00")
+//         label.textColor = UIColor(named: "950")
+//         label.font = .systemFont(ofSize: 14)
+//         label.textAlignment = .left
+//         return label
+//     }()
+    
+//     private let productPriceLabel: UILabel = {
+//         let label = UILabel()
+//         label.backgroundColor = UIColor(named: "00")
+//         label.textColor = UIColor(named: "950")
+//         label.font = .boldSystemFont(ofSize: 14)
+//         label.textAlignment = .left
+//         return label
+//     }()
+    
+//     private let addButton: UIButton = {
+
         let button = UIButton()
         if let buttonImage = UIImage(named: "addButtonIcon") {
             button.setBackgroundImage(buttonImage, for: .normal)
         }
         button.layer.cornerRadius = 17
-        // button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+      
+            // Mark: - Dev 수정 내용 확인 필요 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//         button.clipsToBounds = true
+//         button.imageView?.contentMode = .scaleAspectFill
+//        // button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+//         return button
+    }()
+    
+
 
         // 이미지 뷰와 라벨을 세로로 배치할 스택 뷰 설정
         let productStackView = UIStackView()
