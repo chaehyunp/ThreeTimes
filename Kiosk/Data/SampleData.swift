@@ -44,17 +44,17 @@ struct ProductData {
             Product(img: "ImghoppangChoco", name: "초코 호빵", price: "2,000원"),
         ],
         "닭꼬치": [
-            Product(img: "ImgSkewerSoySauce", name: "간장맛", price: "1,200원"),
-            Product(img: "ImgSkewerGreenOnion", name: "파", price: "1,500원"),
-            Product(img: "ImgSkewerHotFried", name: "핫 후라이드", price: "1,800원"),
-            Product(img: "ImgSkewerFried", name: "후라이드", price: "2,000원"),
+            Product(img: "ImgSkewerSoySauce", name: "간장 닭꼬치", price: "1,200원"),
+            Product(img: "ImgSkewerGreenOnion", name: "파닭꼬치", price: "1,500원"),
+            Product(img: "ImgSkewerHotFried", name: "핫후라이드 닭꼬치", price: "1,800원"),
+            Product(img: "ImgSkewerFried", name: "후라이드 닭꼬치", price: "2,000원"),
             Product(img: "ImgSkewerHotBar", name: "핫바", price: "2,000원")
         ],
         "기타": [
             Product(img: "ImgRoastedChestnuts", name: "군밤", price: "1,200원"),
             Product(img: "ImgRoastedSweetPotatoes", name: "군고구마", price: "1,500원"),
             Product(img: "ImgTakoyaki", name: "타코야끼", price: "1,800원"),
-            Product(img: "ImgTenWonBreadImgDeliManju", name: "십원빵", price: "2,000원"),
+            Product(img: "ImgtenWonBread", name: "십원빵", price: "2,000원"),
             Product(img: "ImgDeliManju", name: "델리만쥬", price: "2,000원")
         ]
     ]

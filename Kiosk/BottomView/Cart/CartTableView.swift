@@ -60,7 +60,7 @@ class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
                 let label = UILabel()
                 label.text = "장바구니가 비었습니다."
                 label.textAlignment = .center
-                label.textColor = .gray
+                label.textColor = UIColor(named: "600")
                 return label
             }
             self.backgroundView = emptyLabel
