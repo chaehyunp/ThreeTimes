@@ -55,11 +55,17 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             switch action {
             case "increase":
                 self.bottomView.cartView.data[index].quantity += 1
+                self.bottomView.cartView.data[index].price = {
+                    let price = self.bottomView.cartView.data[index].quantity * (Int(self.bottomView.cartView.data[index].product.price) ?? 0)
+                    return price
+                }()
+                self.calculatePrice(index: index)
                 
             case "decrease":
                 if  self.bottomView.cartView.data[index].quantity >= 2 {
                     self.bottomView.cartView.data[index].quantity -= 1
                 }
+                self.calculatePrice(index: index)
 //                // 0이 되면 삭제
 //                if  self.bottomView.cartView.data[index].quantity == 0 {
 //                    self.bottomView.cartView.data.remove(at: index)
@@ -89,12 +95,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
-    //총 수량 계산
-    private func calculateQuantity() {
-        let totalQuantity = self.bottomView.cartView.data.map { $0.quantity }.reduce(0, +)
-        self.bottomView.quantityLabel.updateLabel(to: totalQuantity)
-    }
-    
+   
     // MARK: - Setup Navigation Bar
     private func setupNavigationBar() {
         navigationItem.title = "WINDYJUNG"
@@ -275,39 +276,20 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let pageIndex = round(scrollView.contentOffset.x / view.frame.width)
         pageControl.currentPage = Int(pageIndex)
     }
-    
-    //임시 추가 삭제 버튼들
-//    private func setupTempButtons() {
-//        let addButton = UIButton(type: .system)
-//        addButton.setTitle("상품 추가", for: .normal)
-//        addButton.addTarget(self, action: #selector(addProduct), for: .touchUpInside)
-//        
-//        let deleteButton = UIButton(type: .system)
-//        deleteButton.setTitle("상품 삭제", for: .normal)
-//        deleteButton.addTarget(self, action: #selector(removeLastProduct), for: .touchUpInside)
-//        
-//        let buttonStack = UIStackView(arrangedSubviews: [addButton, deleteButton])
-//        buttonStack.axis = .horizontal
-//        buttonStack.spacing = 20
-//        buttonStack.alignment = .center
-//        buttonStack.distribution = .equalSpacing
-//        
-//        scrollView.addSubview(buttonStack)
-//        buttonStack.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        NSLayoutConstraint.activate([
-//            buttonStack.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 20),
-//            buttonStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-    //        ])
-    //    }
-    
-    //셀 추가 메서드 연결
+    // MARK: button method
+    //총 수량 계산
+    private func calculateQuantity() {
+        let totalQuantity = self.bottomView.cartView.data.map { $0.quantity }.reduce(0, +)
+        self.bottomView.quantityLabel.updateLabel(to: totalQuantity)
+    }
+    //상품 추가
     private func addProduct(product: Product) {
         let newProduct = CartData(product: product)//새로운 셀 데이터
         if let existingIndex = bottomView.cartView.data.firstIndex(where: { $0.product.name == product.name }) {
             // 이미 존재하는 경우, 해당 CartData의 quantity를 증가
             bottomView.cartView.data[existingIndex].quantity += 1
             bottomView.cartView.reloadData()
+            self.calculatePrice(index: existingIndex)
             
         } else {
             // 존재하지 않는 경우, 새로운 상품 추가
@@ -316,13 +298,13 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         calculateQuantity()
         bottomView.updateCartHeight()
     }
-    //    //셀 삭제 메서드 연결
-    //    @objc private func removeLastProduct() {
-//        guard !bottomView.cartView.data.isEmpty else { return }
-//        bottomView.cartView.removeProduct(at: bottomView.cartView.data.count - 1)
-//        bottomView.updateCartHeight()
-//    }
-    
+    //금액 계산
+    private func calculatePrice(index: Int) {
+        self.bottomView.cartView.data[index].price = {
+            let price = self.bottomView.cartView.data[index].quantity * (Int(self.bottomView.cartView.data[index].product.price) ?? 0)
+            return price
+        }()
+    }
 }
 
 // MARK: - Custom Page Cell
