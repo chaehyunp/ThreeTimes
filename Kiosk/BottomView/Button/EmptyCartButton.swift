@@ -17,7 +17,7 @@ class EmptyButton: UIButton  {
     }
     //버튼 셋업
     func setupButton() {
-        setTitle("취소하기", for: .normal)
+        setTitle(NSLocalizedString("cancelAll", comment: ""), for: .normal)
         setTitleColor(.black, for: .normal)
         setTitleColor(.gray, for: .highlighted)
         titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)

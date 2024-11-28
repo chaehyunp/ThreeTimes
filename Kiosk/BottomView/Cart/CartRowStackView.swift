@@ -96,6 +96,10 @@ class CartRowStackView: UIStackView {
         addArrangedSubview(deleteButton)
         
         // 레이아웃 설정
+        productLabel.snp.makeConstraints{ make in
+            make.width.equalTo(120)
+        }
+        
         minusButton.snp.makeConstraints { make in
             make.width.height.equalTo(30)
         }

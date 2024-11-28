@@ -28,38 +28,37 @@ struct Product {
 
 struct ProductData {
     static let productCategories: [String: [Product]] = [
-        "붕어빵": [
-            Product(img: "ImgFishBunRedBean", name: "팥 붕어빵", price: "1,000원"),
-            Product(img: "ImgFishBunCustard", name: "슈크림 붕어빵", price: "1,000원"),
-            Product(img: "ImgFishBunCheese", name: "치즈 붕어빵", price: "1,500원"),
-            Product(img: "ImgFishBunChoco", name: "초코 붕어빵", price: "1,500원"),
-            Product(img: "ImgFishBunPizza", name: "피자 붕어빵", price: "2,000원"),
-            Product(img: "ImgFishBunMatcha", name: "말차 붕어빵", price: "2,000원")
+        "finshBun": [
+            Product(img: "ImgFishBunRedBean", name: "fishBunRedBean", price: "1000"),
+            Product(img: "ImgFishBunCustard", name: "fishBunCustard", price: "1000"),
+            Product(img: "ImgFishBunCheese", name: "fishBunCheese", price: "1500"),
+            Product(img: "ImgFishBunChoco", name: "fishBunChoco", price: "1500"),
+            Product(img: "ImgFishBunPizza", name: "fishBunPizza", price: "2000"),
+            Product(img: "ImgFishBunMatcha", name: "fishBunMatcha", price: "2000")
         ],
-        "호떡/호빵": [
-            Product(img: "ImghoppangHoney", name: "꿀 호떡", price: "1,200원"),
-            Product(img: "ImghoppangBubble", name: "공갈 호떡", price: "1,800원"),
-            Product(img: "ImghoppangRedBean", name: "팥 호빵", price: "2,000원"),
-            Product(img: "ImghoppangMatcha", name: "녹차 호빵", price: "2,000원"),
-            Product(img: "ImghoppangChoco", name: "초코 호빵", price: "2,000원"),
+        "hoppang": [
+            Product(img: "ImghoppangHoney", name: "hoppangHoney", price: "1200"),
+            Product(img: "ImghoppangBubble", name: "hoppangBubble", price: "1800"),
+            Product(img: "ImghoppangRedBean", name: "hoppangRedBean", price: "2000"),
+            Product(img: "ImghoppangMatcha", name: "hoppangMatcha", price: "2000"),
+            Product(img: "ImghoppangChoco", name: "hoppangChoco", price: "2000"),
         ],
-        "닭꼬치": [
-            Product(img: "ImgSkewerSoySauce", name: "간장 닭꼬치", price: "1,200원"),
-            Product(img: "ImgSkewerGreenOnion", name: "파닭꼬치", price: "1,500원"),
-            Product(img: "ImgSkewerHotFried", name: "핫후라이드 닭꼬치", price: "1,800원"),
-            Product(img: "ImgSkewerFried", name: "후라이드 닭꼬치", price: "2,000원"),
-            Product(img: "ImgSkewerHotBar", name: "핫바", price: "2,000원")
+        "skewer": [
+            Product(img: "ImgSkewerSoySauce", name: "skewerSoySauce", price: "1200"),
+            Product(img: "ImgSkewerGreenOnion", name: "skewerGreenOnion", price: "1500"),
+            Product(img: "ImgSkewerHotFried", name: "skewerHotFried", price: "1800"),
+            Product(img: "ImgSkewerFried", name: "skewerFried", price: "2000"),
+            Product(img: "ImgSkewerHotBar", name: "skewerHotBar", price: "2000")
         ],
-        "기타": [
-            Product(img: "ImgRoastedChestnuts", name: "군밤", price: "1,200원"),
-            Product(img: "ImgRoastedSweetPotatoes", name: "군고구마", price: "1,500원"),
-            Product(img: "ImgTakoyaki", name: "타코야끼", price: "1,800원"),
-            Product(img: "ImgtenWonBread", name: "십원빵", price: "2,000원"),
-            Product(img: "ImgDeliManju", name: "델리만쥬", price: "2,000원")
+        "else": [
+            Product(img: "ImgRoastedChestnuts", name: "roastedChestnuts", price: "1200"),
+            Product(img: "ImgRoastedSweetPotatoes", name: "roastedSweetPotatoes", price: "1500"),
+            Product(img: "ImgTakoyaki", name: "takoyaki", price: "1800"),
+            Product(img: "ImgTenWonBread", name: "tenWonBread", price: "2000"),
+            Product(img: "ImgDeliManju", name: "deliManju", price: "2000")
         ]
     ]
-    // Segmented Control Titles
-    static let segmentedControlTitles = ["붕어빵", "호떡/호빵", "닭꼬치", "기타"]
+    static let segmentedControlTitles = ["fishBun", "hoppang", "skewer", "else"]
 }
 
 
