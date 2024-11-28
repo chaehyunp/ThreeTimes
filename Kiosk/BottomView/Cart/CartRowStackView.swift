@@ -9,29 +9,31 @@ import UIKit
 import SnapKit
 
 class CartRowStackView: UIStackView {
+    var buttonTapped: ((String) -> Void)?//클로저 콜백을 위한 프로퍼티
+    var product: CartData = CartData(product: Product(img: "none", name: "***", price: "0원"))
     
     // UI 요소 정의
-    private let productLabel: UILabel = {
+    private lazy var productLabel: UILabel = {
         let label = UILabel()
-        label.text = "피자 붕어빵"
+        label.text = product.product.name
         label.font = .systemFont(ofSize: 17)
-        label.textColor = UIColor(red: 0.503, green: 0.502, blue: 0.502, alpha: 1)
+        label.textColor = UIColor(named: "500")
         return label
     }()
     
     private let minusButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("−", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1)
-        button.layer.cornerRadius = 15
-        button.tintColor = .white
+        let button = UIButton()
+        if let buttonImage = UIImage(named: "IcMinus") {
+              button.setBackgroundImage(buttonImage, for: .normal)
+            }
+            button.clipsToBounds = true
+            button.imageView?.contentMode = .scaleAspectFill
         return button
     }()
     
-    private let quantityLabel: UILabel = {
+    private lazy var quantityLabel: UILabel = {
         let label = UILabel()
-        label.text = "2"
+        label.text = "\(self.product.quantity)"
         label.font = .systemFont(ofSize: 18)
         label.textAlignment = .center
         return label
@@ -39,41 +41,41 @@ class CartRowStackView: UIStackView {
     
     private let plusButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("+", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 20)
-        button.backgroundColor = UIColor(red: 198/255, green: 178/255, blue: 165/255, alpha: 1.0)
-        button.layer.cornerRadius = 15
-        button.tintColor = .white
+        if let buttonImage = UIImage(named: "IcPlus") {
+              button.setBackgroundImage(buttonImage, for: .normal)
+            }
+            button.clipsToBounds = true
+            button.imageView?.contentMode = .scaleAspectFill
         return button
     }()
     
-    private let priceLabel: UILabel = {
+    private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "2,400원"
+        label.text = product.product.price
         label.font = .systemFont(ofSize: 16)
-        label.textColor = UIColor(red: 0.647, green: 0.647, blue: 0.647, alpha: 1)
+        label.textColor = UIColor(named: "600")
         label.textAlignment = .right
         return label
     }()
     
     private let deleteButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("×", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 23)
-        button.layer.cornerRadius = 15
-        button.tintColor = .black
+        if let buttonImage = UIImage(named: "IcDelete") {
+              button.setBackgroundImage(buttonImage, for: .normal)
+            }
+            button.clipsToBounds = true
+            button.imageView?.contentMode = .scaleAspectFill
         return button
     }()
     
     // 초기화
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init() {
+        super.init(frame: .zero)
         setupUI()
     }
     
     required init(coder: NSCoder) {
-        super.init(coder: coder)
-        setupUI()
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupUI() {
@@ -94,6 +96,11 @@ class CartRowStackView: UIStackView {
         addArrangedSubview(priceLabel)
         addArrangedSubview(deleteButton)
         
+        //버튼 액션 설정
+        plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        minusButton.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
+        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        
         // 레이아웃 설정
         minusButton.snp.makeConstraints { make in
             make.width.height.equalTo(30)
@@ -108,11 +115,24 @@ class CartRowStackView: UIStackView {
         }
         
         deleteButton.snp.makeConstraints { make in
-            make.width.height.equalTo(35)
+            make.width.height.equalTo(20)
         }
     }
     
-    func updateData() {
-        //데이터 업데이트
+    func updateData(product: CartData) {
+        self.product = product
+        self.productLabel.text = product.product.name
+        self.priceLabel.text = product.product.price
+        self.quantityLabel.text = String(product.quantity)
+    }
+    //버튼 전달
+    @objc private func plusButtonTapped() {
+        buttonTapped?("increase")
+    }
+    @objc private func minusButtonTapped() {
+        buttonTapped?("decrease")
+    }
+    @objc private func deleteButtonTapped() {
+        buttonTapped?("delete")
     }
 }
