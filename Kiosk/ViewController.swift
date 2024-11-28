@@ -3,16 +3,23 @@ import SnapKit
 
 class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
     
+    // 1. 스크롤  OK
+    // 2. 데이터 붙이기 - 일러스트 포함 OK
+    // 3. 플러스 버튼 눌렀을때 아래에 상품 추가
+    // 4. 바텀뷰 버튼 이벤트 - 전체 취소, 알러트
+    
+    
     // MARK: - Properties
     private let scrollView = UIScrollView()
+    private let spacingView = UIView()
     private var collectionView: UICollectionView!
-    private let segmentedControl = UISegmentedControl(items: SampleData.segmentedControlTitles)
+    private let segmentedControl = UISegmentedControl(items: ProductData.segmentedControlTitles)
     private let pageControl = UIPageControl()
     private let contentView = UIView()
     private let bottomView = BottomView()
     
     // Sample Data
-    private let productCategories = SampleData.productCategories
+    private let productCategories = ProductData.productCategories
     private var filteredProducts: [Product] = []
     
     override func viewDidLoad() {
@@ -54,12 +61,13 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     // MARK: - Setup ScrollView
     private func setupScrollView() {
         view.addSubview(scrollView)
-        scrollView.backgroundColor = UIColor(named: "900") // 테스트 컬러
-//        scrollView.backgroundColor = UIColor(named: "50")
+//        scrollView.backgroundColor = UIColor(named: "900") // 테스트 컬러
+        scrollView.backgroundColor = UIColor(named: "100")
         scrollView.showsVerticalScrollIndicator = false
         
         scrollView.snp.makeConstraints { make in
-            make.top.equalTo(segmentedControl.snp.bottom)
+//            make.top.equalTo(segmentedControl.snp.bottom)
+            make.top.equalTo(spacingView.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
@@ -81,7 +89,17 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         segmentedControl.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8)
             make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(36)
         }
+
+        view.addSubview(spacingView)
+
+        spacingView.snp.makeConstraints{ make in
+            make.top.equalTo(segmentedControl.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(18)
+        }
+        
     }
     
     // MARK: - Setup Collection View
@@ -105,7 +123,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 
         contentView.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-            make.top.equalTo(segmentedControl.snp.bottom).offset(16)
+//            make.top.equalTo(segmentedControl.snp.bottom).offset(16)
+            make.top.equalTo(scrollView.snp.top)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(400)
         }
@@ -140,7 +159,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     // MARK: - Segmented Control Action
     @objc private func segmentChanged(_ sender: UISegmentedControl) {
-        let selectedCategory = SampleData.segmentedControlTitles[sender.selectedSegmentIndex]
+        let selectedCategory = ProductData.segmentedControlTitles[sender.selectedSegmentIndex]
         
         if selectedCategory == "전체" {
             filteredProducts = productCategories.flatMap { $0.value }
@@ -259,23 +278,23 @@ class PageCell: UICollectionViewCell {
     private func createProductView(for product: Product) -> UIView {
         // 전체 상품 뷰 설정
         let productView = UIView()
-        productView.backgroundColor = .white
         productView.layer.cornerRadius = 10
         productView.layer.borderWidth = 1
         productView.layer.borderColor = UIColor.lightGray.cgColor
+        productView.backgroundColor = UIColor(named: "00")
         productView.clipsToBounds = true
         
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(named: "100")
         imageView.layer.cornerRadius = 6
         imageView.clipsToBounds = true
-        imageView.image = UIImage(named: "sampleImage") // 예시 이미지
+        imageView.image = UIImage(named: product.img) // 예시 이미지
+        imageView.contentMode = .scaleAspectFit
         
         // 라벨 설정
         let label = UILabel()
         
         label.text = "\(product.name)\n\(product.price)"
-        label.backgroundColor = .white
         label.textAlignment = .left
         label.font = .systemFont(ofSize: 14)
         label.textColor = .black
@@ -293,7 +312,7 @@ class PageCell: UICollectionViewCell {
         productStackView.spacing = 8
         productStackView.alignment = .fill
         productStackView.distribution = .fill
-        productStackView.backgroundColor = .white
+//        productStackView.backgroundColor = .white
         // 이미지뷰와 라벨을 스택뷰에 추가
         productStackView.addArrangedSubview(imageView)
         productStackView.addArrangedSubview(label)
@@ -320,7 +339,10 @@ class PageCell: UICollectionViewCell {
         
         // 이미지 뷰 제약 설정
         imageView.snp.makeConstraints { make in
-            make.height.equalTo(70) // 이미지 뷰의 고정 높이
+            make.height.equalTo(60) // 이미지 뷰의 고정 높이
+            
+//            let size = productStackView.frame.height
+//            make.height.equalTo(size)
             make.width.equalToSuperview() // 이미지 뷰의 너비를 부모 뷰에 맞게 설정
         }
         
