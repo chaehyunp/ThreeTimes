@@ -26,7 +26,6 @@ class BottomView: UIView {
     }
     //하단 뷰 셋업
     private func setupBottomView() {
-        backgroundColor = .lightGray
         [cartView, buttons, priceLabel, quantityLabel].forEach {
             self.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
