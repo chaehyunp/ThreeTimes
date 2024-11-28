@@ -10,7 +10,6 @@ import UIKit
 class TotalPriceLabel: UIView {
     private var purchaseLabel: UILabel = {
         let label = UILabel()
-        label.text = "결제금액"
         label.textColor = UIColor(named: "950")
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.textAlignment = .left
@@ -18,7 +17,7 @@ class TotalPriceLabel: UIView {
     }()
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "\(self.price)원"
+        label.text = "\(self.price)\(NSLocalizedString("won", comment: ""))"
         label.textColor = UIColor(named: "950")
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textAlignment = .right

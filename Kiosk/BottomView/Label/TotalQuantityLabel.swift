@@ -18,7 +18,9 @@ class TotalQuantityLabel: UILabel {
     }
     //레이블 셋업
     private func setupLabel() {
-        text = "총 \(quantity)개"
+        let total = NSLocalizedString("total", comment: "")
+        let gae = NSLocalizedString("gae", comment: "")
+        text = "\(total) \(quantity)\(gae)"
         textColor = UIColor(named: "950")
         font = UIFont.systemFont(ofSize: 18, weight: .bold)
         textAlignment = .left

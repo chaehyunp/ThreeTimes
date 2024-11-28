@@ -58,7 +58,7 @@ class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         if data.isEmpty {
             var emptyLabel: UILabel {
                 let label = UILabel()
-                label.text = "장바구니가 비었습니다."
+                label.text = NSLocalizedString("empty", comment: "")
                 label.textAlignment = .center
                 label.textColor = UIColor(named: "600")
                 return label
