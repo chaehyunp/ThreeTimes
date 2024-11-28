@@ -24,3 +24,5 @@ struct SampleData {
     // Segmented Control Titles
     static let segmentedControlTitles = ["전체", "붕어빵", "호떡", "기타"]
 }
+
+
