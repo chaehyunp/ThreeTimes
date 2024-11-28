@@ -38,6 +38,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         // 2-2. 스크롤 뷰 내 하단: 바텀뷰
         setupBottomView()
         
+        // 2-2-1 임시 추가 삭제 버튼
+        setupTempButtons()
+        
         // Initialize Filtered Data
         filteredProducts = productCategories.flatMap { $0.value }
         updatePageControl()
@@ -46,7 +49,33 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     // MARK: - Setup BottomView
     private func setupBottomView() {
         scrollView.addSubview(bottomView)
-        
+        bottomView.cartView.cartUpdate = { [weak self] index, action in
+            guard let self = self else { return }
+            switch action {
+            case "increase":
+                self.bottomView.cartView.data[index].quantity += 1
+            case "decrease":
+                if  self.bottomView.cartView.data[index].quantity > 0 {
+                    self.bottomView.cartView.data[index].quantity -= 1
+                }
+                // 0이 되면 삭제
+                if  self.bottomView.cartView.data[index].quantity == 0 {
+                    self.bottomView.cartView.data.remove(at: index)
+                }
+            case "delete":
+                self.bottomView.cartView.data.remove(at: index)
+            default:
+                break
+            }
+//             UI 업데이트
+            if action == "delete" || self.bottomView.cartView.data.isEmpty {
+                self.bottomView.cartView.reloadData() // 전체 갱신
+               
+            } else {
+                let indexPath = IndexPath(row: index, section: 0)
+                self.bottomView.cartView.reloadRows(at: [indexPath], with: .automatic) // 특정 셀만 갱신
+            }
+        }
         bottomView.snp.makeConstraints{ make in
             make.top.equalTo(pageControl.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
@@ -195,6 +224,44 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let pageIndex = round(scrollView.contentOffset.x / view.frame.width)
         pageControl.currentPage = Int(pageIndex)
+    }
+    
+    //임시 추가 삭제 버튼들
+    private func setupTempButtons() {
+        let addButton = UIButton(type: .system)
+        addButton.setTitle("상품 추가", for: .normal)
+        addButton.addTarget(self, action: #selector(addProduct), for: .touchUpInside)
+        
+        let deleteButton = UIButton(type: .system)
+        deleteButton.setTitle("상품 삭제", for: .normal)
+        deleteButton.addTarget(self, action: #selector(removeLastProduct), for: .touchUpInside)
+        
+        let buttonStack = UIStackView(arrangedSubviews: [addButton, deleteButton])
+        buttonStack.axis = .horizontal
+        buttonStack.spacing = 20
+        buttonStack.alignment = .center
+        buttonStack.distribution = .equalSpacing
+        
+        scrollView.addSubview(buttonStack)
+        buttonStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            buttonStack.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 20),
+            buttonStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+        ])
+    }
+    
+    //셀 추가 메서드 연결
+    @objc private func addProduct() {
+        let newProduct = CartData(product: Product(img: "ImgFishBunRedBean", name: "팥 붕어빵", price: "1,000원"))//새로운 셀 데이터
+        bottomView.cartView.addProduct(newProduct)
+        bottomView.updateCartHeight()
+    }
+    //셀 삭제 메서드 연결
+    @objc private func removeLastProduct() {
+        guard !bottomView.cartView.data.isEmpty else { return }
+        bottomView.cartView.removeProduct(at: bottomView.cartView.data.count - 1)
+        bottomView.updateCartHeight()
     }
     
 }

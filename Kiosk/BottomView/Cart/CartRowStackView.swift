@@ -10,8 +10,7 @@ import SnapKit
 
 class CartRowStackView: UIStackView {
     var buttonTapped: ((String) -> Void)?//클로저 콜백을 위한 프로퍼티
-    var product: CartData!
-    var quantity: Int = 1
+    var product: CartData = CartData(product: Product(img: "none", name: "***", price: "0원"))
     
     // UI 요소 정의
     private lazy var productLabel: UILabel = {
@@ -34,7 +33,7 @@ class CartRowStackView: UIStackView {
     
     private lazy var quantityLabel: UILabel = {
         let label = UILabel()
-        label.text = "\(self.quantity)"
+        label.text = "\(self.product.quantity)"
         label.font = .systemFont(ofSize: 18)
         label.textAlignment = .center
         return label
@@ -50,9 +49,9 @@ class CartRowStackView: UIStackView {
         return button
     }()
     
-    private let priceLabel: UILabel = {
+    private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "2,400" + NSLocalizedString("won", comment: "")
+        label.text = product.product.price
         label.font = .systemFont(ofSize: 16)
         label.textColor = UIColor(named: "600")
         label.textAlignment = .right
@@ -116,21 +115,24 @@ class CartRowStackView: UIStackView {
         }
         
         deleteButton.snp.makeConstraints { make in
-            make.width.height.equalTo(35)
+            make.width.height.equalTo(20)
         }
     }
     
     func updateData(product: CartData) {
         self.product = product
+        self.productLabel.text = product.product.name
+        self.priceLabel.text = product.product.price
+        self.quantityLabel.text = String(product.quantity)
     }
     //버튼 전달
     @objc private func plusButtonTapped() {
         buttonTapped?("increase")
     }
     @objc private func minusButtonTapped() {
-        buttonTapped?("increase")
+        buttonTapped?("decrease")
     }
     @objc private func deleteButtonTapped() {
-        buttonTapped?("increase")
+        buttonTapped?("delete")
     }
 }

@@ -9,6 +9,7 @@ import UIKit
 
 class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     var data: [CartData] = [] //추후 실제 데이터로 변경
+    var cartUpdate: ((Int, String) -> Void)?
     init() {
         super.init(frame: .zero, style: .plain)
         setupTableView()
@@ -29,6 +30,9 @@ class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         }
         let productData = data[indexPath.row]
         cell.configure(with: productData)
+        cell.rowTapped = { [weak self] action in
+            self?.cartUpdate?(indexPath.row, action)
+        }
         return cell
     }
     //행 추가 메서드
@@ -36,7 +40,13 @@ class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         let newIndex = data.count//.count로 마지막 인덱스 +1의 인덱스를 지정
         data.append(product)//새로운 데이터 추가
         self.insertRows(at: [IndexPath(row: newIndex, section: 0)], with: .automatic)//행 추가
+        DispatchQueue.main.async {
+            if let cell = self.cellForRow(at: IndexPath(row: newIndex, section: 0)) as? CartTableViewCell{
+                cell.configure(with: product)
+            }
+        }
         self.checkRowEmpty()//장바구니가 채워졌다면 문구 삭제
+        
     }
     //행 삭제 메서드
     func removeProduct(at index: Int) {
