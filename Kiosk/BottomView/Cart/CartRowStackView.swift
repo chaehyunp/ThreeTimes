@@ -9,11 +9,14 @@ import UIKit
 import SnapKit
 
 class CartRowStackView: UIStackView {
+    var buttonTapped: ((String) -> Void)?//클로저 콜백을 위한 프로퍼티
+    var product: CartData!
+    var quantity: Int = 1
     
     // UI 요소 정의
-    private let productLabel: UILabel = {
+    private lazy var productLabel: UILabel = {
         let label = UILabel()
-        label.text = "피자 붕어빵"
+        label.text = product.product.name
         label.font = .systemFont(ofSize: 17)
         label.textColor = UIColor(named: "500")
         return label
@@ -29,9 +32,9 @@ class CartRowStackView: UIStackView {
         return button
     }()
     
-    private let quantityLabel: UILabel = {
+    private lazy var quantityLabel: UILabel = {
         let label = UILabel()
-        label.text = "2"
+        label.text = "\(self.quantity)"
         label.font = .systemFont(ofSize: 18)
         label.textAlignment = .center
         return label
@@ -67,14 +70,13 @@ class CartRowStackView: UIStackView {
     }()
     
     // 초기화
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init() {
+        super.init(frame: .zero)
         setupUI()
     }
     
     required init(coder: NSCoder) {
-        super.init(coder: coder)
-        setupUI()
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupUI() {
@@ -95,6 +97,11 @@ class CartRowStackView: UIStackView {
         addArrangedSubview(priceLabel)
         addArrangedSubview(deleteButton)
         
+        //버튼 액션 설정
+        plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
+        minusButton.addTarget(self, action: #selector(minusButtonTapped), for: .touchUpInside)
+        deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
+        
         // 레이아웃 설정
         minusButton.snp.makeConstraints { make in
             make.width.height.equalTo(30)
@@ -113,7 +120,17 @@ class CartRowStackView: UIStackView {
         }
     }
     
-    func updateData() {
-        //데이터 업데이트
+    func updateData(product: CartData) {
+        self.product = product
+    }
+    //버튼 전달
+    @objc private func plusButtonTapped() {
+        buttonTapped?("increase")
+    }
+    @objc private func minusButtonTapped() {
+        buttonTapped?("increase")
+    }
+    @objc private func deleteButtonTapped() {
+        buttonTapped?("increase")
     }
 }

@@ -11,9 +11,10 @@ import UIKit
 class CartTableViewCell: UITableViewCell {
     static let identifier: String = "CartTableViewCell"//셀 재사용을 위한 식별자
     private let productRow: CartRowStackView = CartRowStackView() //솔님의 스택뷰
+    var rowTapped: ((String) -> Void)?
     
-    override init(style: UITableViewCell.CellStyle = .default,
-                  reuseIdentifier: String?) {
+    init(style: UITableViewCell.CellStyle = .default,
+         reuseIdentifier: String?, product: Product) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupTableView()
     }
@@ -22,14 +23,14 @@ class CartTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //테이블뷰 셀 세팅
-    func setupInfoStack(data: String) {//추후 실제 데이터 타입으로 변경
-        let cell = CartRowStackView()//솔님이 작성한 스택뷰로 변경
-        contentView.addSubview(cell)
-    }
+//    //테이블뷰 셀 세팅
+//    func setupInfoStack(data: String) {//추후 실제 데이터 타입으로 변경
+//        let cell = CartRowStackView()//솔님이 작성한 스택뷰로 변경
+//        contentView.addSubview(cell)
+//    }
     //productRow의 데이터 구성
-    func configure(with data: String) {
-        productRow.updateData()
+    func configure(with product: CartData) {
+        productRow.updateData(product: product)
     }
     //테이블뷰 셋업
     private func setupTableView() {

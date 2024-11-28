@@ -8,7 +8,7 @@
 import UIKit
 
 class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
-    var data: [String] = [] //추후 실제 데이터로 변경
+    var data: [CartData] = [] //추후 실제 데이터로 변경
     init() {
         super.init(frame: .zero, style: .plain)
         setupTableView()
@@ -32,7 +32,7 @@ class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     //행 추가 메서드
-    func addProduct(_ product: String) {
+    func addProduct(_ product: CartData) {
         let newIndex = data.count//.count로 마지막 인덱스 +1의 인덱스를 지정
         data.append(product)//새로운 데이터 추가
         self.insertRows(at: [IndexPath(row: newIndex, section: 0)], with: .automatic)//행 추가
