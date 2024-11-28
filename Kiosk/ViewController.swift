@@ -55,6 +55,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             switch action {
             case "increase":
                 self.bottomView.cartView.data[index].quantity += 1
+                
             case "decrease":
                 if  self.bottomView.cartView.data[index].quantity >= 2 {
                     self.bottomView.cartView.data[index].quantity -= 1
@@ -74,6 +75,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 break
             }
 //             UI 업데이트
+            calculateQuantity()
             if action == "delete" || self.bottomView.cartView.data.isEmpty {
                 self.bottomView.cartView.reloadData() // 전체 갱신
                
@@ -86,6 +88,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             make.top.equalTo(pageControl.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
+    }
+    //총 수량 계산
+    private func calculateQuantity() {
+        let totalQuantity = self.bottomView.cartView.data.map { $0.quantity }.reduce(0, +)
+        self.bottomView.quantityLabel.updateLabel(to: totalQuantity)
     }
     
     // MARK: - Setup Navigation Bar
@@ -301,10 +308,12 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             // 이미 존재하는 경우, 해당 CartData의 quantity를 증가
             bottomView.cartView.data[existingIndex].quantity += 1
             bottomView.cartView.reloadData()
+            
         } else {
             // 존재하지 않는 경우, 새로운 상품 추가
             bottomView.cartView.addProduct(newProduct)
         }
+        calculateQuantity()
         bottomView.updateCartHeight()
     }
     //    //셀 삭제 메서드 연결
