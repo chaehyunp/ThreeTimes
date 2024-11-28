@@ -1,95 +1,16 @@
 import UIKit
 import SnapKit
 
-class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-  
-  // MARK: - 박진홍 테스트 코드
-    /*
-     private let bottomView = BottomView()
-     
-     override func viewDidLoad() {
-     super.viewDidLoad()
-     view.backgroundColor = .white
-     setupCartTableView()
-     setupButtons()
-     }
-     //추후 레이아웃 맞춰야 함.
-     private func setupCartTableView() {
-     view.addSubview(bottomView)
-     bottomView.translatesAutoresizingMaskIntoConstraints = false
-     
-     NSLayoutConstraint.activate([
-     bottomView.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
-     bottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-     bottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16)
-     ])
-     }
-     //임시 추가 삭제 버튼들
-     private func setupButtons() {
-     let addButton = UIButton(type: .system)
-     addButton.setTitle("상품 추가", for: .normal)
-     addButton.addTarget(self, action: #selector(addProduct), for: .touchUpInside)
-     
-     let deleteButton = UIButton(type: .system)
-     deleteButton.setTitle("상품 삭제", for: .normal)
-     deleteButton.addTarget(self, action: #selector(removeLastProduct), for: .touchUpInside)
-     
-     let buttonStack = UIStackView(arrangedSubviews: [addButton, deleteButton])
-     buttonStack.axis = .horizontal
-     buttonStack.spacing = 20
-     buttonStack.alignment = .center
-     buttonStack.distribution = .equalSpacing
-     
-     view.addSubview(buttonStack)
-     buttonStack.translatesAutoresizingMaskIntoConstraints = false
-     
-     NSLayoutConstraint.activate([
-     buttonStack.topAnchor.constraint(equalTo: bottomView.bottomAnchor, constant: 20),
-     buttonStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-     ])
-     }
-     //셀 추가 메서드 연결
-     @objc private func addProduct() {
-     let newProduct = "상품 \(bottomView.cartView.data.count + 1)"//새로운 셀 데이터
-     bottomView.cartView.addProduct(newProduct)
-     bottomView.updateCartHeight()
-     }
-     //셀 삭제 메서드 연결
-     @objc private func removeLastProduct() {
-     guard !bottomView.cartView.data.isEmpty else { return }
-     bottomView.cartView.removeProduct(at: bottomView.cartView.data.count - 1)
-     bottomView.updateCartHeight()
-     }
-     }
-     
-     #Preview {
-     ViewController()
-     }
-     */
-    // MARK: - 박진홍 테스트 코드 끝
+class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
 
     // MARK: - Properties
     private var collectionView: UICollectionView!
-    private let segmentedControl = UISegmentedControl(items: ["전체", "붕어빵", "호떡", "기타"])
-    
+    private let segmentedControl = UISegmentedControl(items: SampleData.segmentedControlTitles)
+    private let pageControl = UIPageControl()
+
     // Sample Data
-    private let productCategories = [
-        "붕어빵": [
-            ("팥 붕어빵", "1,000원"),
-            ("슈크림 붕어빵", "1,000원"),
-            ("피자 붕어빵", "1,500원"),
-            ("초코 붕어빵", "1,500원"),
-            ("딸기 붕어빵", "2,000우")
-        ],
-        "호떡": [
-            ("꿀 호떡", "1,200원"),
-            ("씨앗 호떡", "1,500원"),
-            ("공갈 호떡", "1,800원"),
-            ("초코 호떡", "2,000원")
-        ]
-    ]
-    
-    private var filteredProducts: [(String, String)] = []
+    private let productCategories = SampleData.productCategories
+    private var filteredProducts: [Product] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -98,10 +19,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         setupNavigationBar()
         setupSegmentedControl()
         setupCollectionView()
+        setupPageControl()
 
         // Initialize Filtered Data
         filteredProducts = productCategories.flatMap { $0.value }
-
+        updatePageControl()
     }
 
     // MARK: - Setup Navigation Bar
@@ -123,168 +45,248 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 
     // MARK: - Setup Collection View
     private func setupCollectionView() {
-        // Layout Configuration
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 16
-        layout.minimumInteritemSpacing = 16
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        layout.itemSize = CGSize(width: view.frame.width, height: 300)
 
-        // Initialize Collection View
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .white
+        collectionView.isPagingEnabled = true
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.dataSource = self
         collectionView.delegate = self
+        collectionView.register(PageCell.self, forCellWithReuseIdentifier: PageCell.identifier)
 
-        // Register Custom Cell
-        collectionView.register(ProductCell.self, forCellWithReuseIdentifier: ProductCell.identifier)
-
-        // Add Collection View to View
         view.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
             make.top.equalTo(segmentedControl.snp.bottom).offset(16)
-            make.leading.trailing.bottom.equalToSuperview().inset(16)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(400)
         }
+    }
+
+
+    // MARK: - Setup Page Control
+    private func setupPageControl() {
+        pageControl.currentPageIndicatorTintColor = .black
+        pageControl.pageIndicatorTintColor = .lightGray
+        pageControl.addTarget(self, action: #selector(pageControlChanged(_:)), for: .valueChanged)
+
+        view.addSubview(pageControl)
+        pageControl.snp.makeConstraints { make in
+            make.top.equalTo(collectionView.snp.bottom).offset(8)
+            make.centerX.equalToSuperview()
+        }
+    }
+
+    @objc private func pageControlChanged(_ sender: UIPageControl) {
+        let xOffset = CGFloat(sender.currentPage) * collectionView.frame.width
+        collectionView.setContentOffset(CGPoint(x: xOffset, y: 0), animated: true)
+    }
+
+    // MARK: - Update Page Control
+    private func updatePageControl() {
+        let totalPages = Int(ceil(Double(filteredProducts.count) / 4.0))
+        pageControl.numberOfPages = totalPages
+        pageControl.currentPage = 0
     }
 
     // MARK: - Segmented Control Action
     @objc private func segmentChanged(_ sender: UISegmentedControl) {
-        switch sender.selectedSegmentIndex {
-        case 0: // 전체
+        let selectedCategory = SampleData.segmentedControlTitles[sender.selectedSegmentIndex]
+        
+        if selectedCategory == "전체" {
             filteredProducts = productCategories.flatMap { $0.value }
-        case 1: // 붕어빵
-            filteredProducts = productCategories["붕어빵"] ?? []
-        case 2: // 피자 붕어빵 (필터를 세분화하려면 아래처럼 커스텀 조건 추가)
-            filteredProducts = productCategories["호떡"] ?? []
-        case 3: // 호떡
-            filteredProducts = productCategories["기타"] ?? []
-        default:
-            break
+        } else {
+            filteredProducts = productCategories[selectedCategory] ?? []
         }
+        
         collectionView.reloadData()
+        updatePageControl()
     }
-
 
     // MARK: - UICollectionView DataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return filteredProducts.count
+        return Int(ceil(Double(filteredProducts.count) / 4.0)) // 페이지 수
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductCell.identifier, for: indexPath) as? ProductCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PageCell.identifier, for: indexPath) as? PageCell else {
             return UICollectionViewCell()
         }
-
-        let (name, price) = filteredProducts[indexPath.item]
-        cell.configure(name: name, price: price)
+        
+        // Fetch data for the current page
+        let startIndex = indexPath.item * 4
+        let endIndex = min(startIndex + 4, filteredProducts.count)
+        let productsForPage = Array(filteredProducts[startIndex..<endIndex])
+        
+        cell.configure(with: productsForPage)
         return cell
     }
+    
 
-    // MARK: - UICollectionView Delegate Flow Layout
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (view.frame.width - 48) / 2, height: 200) // 2 columns layout
+    // MARK: - UIScrollView Delegate
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        let pageIndex = round(scrollView.contentOffset.x / view.frame.width)
+        pageControl.currentPage = Int(pageIndex)
     }
+
 }
 
-// MARK: - Custom CollectionView Cell
-class ProductCell: UICollectionViewCell {
-    static let identifier = "ProductCell"
+// MARK: - Custom Page Cell
+class PageCell: UICollectionViewCell {
+    static let identifier = "PageCell"
 
-    // UI Components
-    private let productUIView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .white
-        view.layer.cornerRadius = 6
-        view.layer.borderColor = UIColor.lightGray.cgColor
-        view.layer.borderWidth = 1
-        return view
-    }()
-    
-    private let productImageView: UIImageView = {
+        private let productUIView = UIView()
+        private let mainStackView = UIStackView()
+        
+        private let productImageView = UIImageView()
+        private let productNameLabel = UILabel()
+        private let productPriceLabel = UILabel()
+        private let addButton = UIButton()
+
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            setupCell()
+        }
+
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
+        }
+
+        private func setupCell() {
+            contentView.addSubview(productUIView)
+            productUIView.snp.makeConstraints { make in
+                make.edges.equalToSuperview().inset(16)
+            }
+            
+            productUIView.addSubview(mainStackView)
+            mainStackView.axis = .vertical
+            mainStackView.spacing = 10
+            mainStackView.distribution = .fillEqually
+            mainStackView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+                
+            }
+            
+            productUIView.snp.makeConstraints { make in
+                make.height.equalTo(250)  // 원하는 높이 설정
+            }
+
+            // Configure each UI component here (productImageView, productNameLabel, productPriceLabel, addButton)
+        }
+
+    func configure(with products: [Product]) {
+        // 기존에 추가된 뷰 제거
+        mainStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+
+        // 최대 4개의 제품을 2열 2행으로 배치
+        let rows = 2
+        let columns = 2
+        let totalItems = min(products.count, rows * columns)
+
+        for rowIndex in 0..<rows {
+            // 각 행을 위한 수평 스택 뷰 생성
+            let rowStackView = UIStackView()
+            rowStackView.axis = .horizontal
+            rowStackView.spacing = 16
+            rowStackView.distribution = .fillEqually
+
+            for columnIndex in 0..<columns {
+                let itemIndex = rowIndex * columns + columnIndex
+                if itemIndex < totalItems {
+                    // 제품에 대한 네모 박스 생성
+                    let productView = createProductView(for: products[itemIndex])
+                    rowStackView.addArrangedSubview(productView)
+                } else {
+                    // 빈 뷰 추가 (필요 시)
+                    let emptyView = UIView()
+                    rowStackView.addArrangedSubview(emptyView)
+                }
+            }
+
+            mainStackView.addArrangedSubview(rowStackView)
+        }
+    }
+
+    // MARK: - Helper: Product View 생성
+    private func createProductView(for product: Product) -> UIView {
+        // 전체 상품 뷰 설정
+        let productView = UIView()
+        productView.backgroundColor = .white
+        productView.layer.cornerRadius = 10
+        productView.layer.borderWidth = 1
+        productView.layer.borderColor = UIColor.lightGray.cgColor
+        productView.clipsToBounds = true
+
+        // 이미지 뷰 설정
         let imageView = UIImageView()
         imageView.backgroundColor = UIColor(red: 245.0 / 255.0, green: 245.0 / 255.0, blue: 245.0 / 255.0, alpha: 1.0)
         imageView.layer.cornerRadius = 6
         imageView.clipsToBounds = true
-        return imageView
-    }()
-    
-    private let productNameLabel: UILabel = {
+        imageView.image = UIImage(named: "sampleImage") // 예시 이미지
+
+        // 라벨 설정
         let label = UILabel()
+        label.text = "\(product.name)\n\(product.price)"
         label.backgroundColor = .white
-        label.textColor = .black
+        label.textAlignment = .left
         label.font = .systemFont(ofSize: 14)
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private let productPriceLabel: UILabel = {
-        let label = UILabel()
-        label.backgroundColor = .white
         label.textColor = .black
-        label.font = .boldSystemFont(ofSize: 14)
-        label.textAlignment = .left
-        return label
-    }()
-    
-    private let addButton: UIButton = {
+        label.numberOfLines = 0
+
+        // 버튼 설정
         let button = UIButton()
         if let buttonImage = UIImage(named: "addButtonIcon") {
             button.setBackgroundImage(buttonImage, for: .normal)
         }
         button.layer.cornerRadius = 17
-        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
-        return button
-    }()
-    
-    // Initialization
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupCell()
-    }
+        // button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+        // 이미지 뷰와 라벨을 세로로 배치할 스택 뷰 설정
+        let productStackView = UIStackView()
+        productStackView.axis = .vertical
+        productStackView.spacing = 8
+        productStackView.alignment = .fill
+        productStackView.distribution = .fill
+        productStackView.backgroundColor = .white
+        // 이미지뷰와 라벨을 스택뷰에 추가
+        productStackView.addArrangedSubview(imageView)
+        productStackView.addArrangedSubview(label)
 
-    // Setup UI for Cell
-    private func setupCell() {
-        contentView.addSubview(productUIView)
-        productUIView.addSubview(productImageView)
-        productUIView.addSubview(productNameLabel)
-        productUIView.addSubview(productPriceLabel)
-        productUIView.addSubview(addButton)
-        
-        productUIView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        // 상품 뷰에 스택뷰 추가
+        productView.addSubview(productStackView)
+
+        // productView 크기 조정 (height 변경)
+        productView.snp.makeConstraints { make in
+            make.height.equalTo(250)  // 예시로 높이를 220으로 설정 (원하는 높이로 변경 가능)
         }
 
-        productImageView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview().inset(12)
-            make.height.equalTo(112)
+        // 스택뷰 제약 설정
+        productStackView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview().inset(8) // 상단과 좌우에 8px 여백 설정
         }
 
-        productNameLabel.snp.makeConstraints { make in
-            make.top.equalTo(productImageView.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview().inset(8)
+        // 버튼을 오른쪽 아래에 배치하기 위해 제약 설정
+        productView.addSubview(button)
+        button.snp.makeConstraints { make in
+            make.bottom.trailing.equalToSuperview().inset(8) // 오른쪽 아래에 8px 여백 설정
+            make.width.height.equalTo(34) // 버튼 크기 설정
         }
 
-        productPriceLabel.snp.makeConstraints { make in
-            make.top.equalTo(productNameLabel.snp.bottom).offset(4)
-            make.leading.equalToSuperview().inset(8)
+        // 이미지 뷰 제약 설정
+        imageView.snp.makeConstraints { make in
+            make.height.equalTo(70) // 이미지 뷰의 고정 높이
+            make.width.equalToSuperview() // 이미지 뷰의 너비를 부모 뷰에 맞게 설정
         }
 
-        addButton.snp.makeConstraints { make in
-            make.bottom.trailing.equalToSuperview().inset(8)
-            make.width.height.equalTo(34)
+        // 라벨 제약 설정
+        label.snp.makeConstraints { make in
+            make.height.equalTo(40) // 라벨의 고정 높이
         }
+
+        return productView
     }
 
-    // Configure Cell
-    func configure(name: String, price: String) {
-        productNameLabel.text = name
-        productPriceLabel.text = price
-    }
-    @objc private func addButtonTapped() {
-        print("상품이 추가되었습니다.")
-    }
 }
-
