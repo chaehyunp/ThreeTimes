@@ -19,7 +19,7 @@ class TotalQuantityLabel: UILabel {
     //레이블 셋업
     private func setupLabel() {
         text = "총 \(quantity)개"
-        textColor = .black
+        textColor = UIColor(named: "950")
         font = UIFont.systemFont(ofSize: 18, weight: .bold)
         textAlignment = .left
     }

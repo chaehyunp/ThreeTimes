@@ -55,13 +55,12 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     // MARK: - Setup Navigation Bar
     private func setupNavigationBar() {
-        navigationItem.title = "WinterDessert"
+        navigationItem.title = "WINDYJUNG"
     }
     
     // MARK: - Setup ScrollView
     private func setupScrollView() {
         view.addSubview(scrollView)
-//        scrollView.backgroundColor = UIColor(named: "900") // 테스트 컬러
         scrollView.backgroundColor = UIColor(named: "100")
         scrollView.showsVerticalScrollIndicator = false
         
@@ -108,7 +107,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        layout.itemSize = CGSize(width: view.frame.width, height: 300)
+        layout.itemSize = CGSize(width: view.frame.width, height: 350)
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
@@ -134,8 +133,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     
     // MARK: - Setup Page Control
     private func setupPageControl() {
-        pageControl.currentPageIndicatorTintColor = .black
-        pageControl.pageIndicatorTintColor = .lightGray
+        pageControl.currentPageIndicatorTintColor = UIColor(named: "950")
+        pageControl.pageIndicatorTintColor = UIColor(named: "600")
         pageControl.addTarget(self, action: #selector(pageControlChanged(_:)), for: .valueChanged)
         
         contentView.addSubview(pageControl)
@@ -292,13 +291,19 @@ class PageCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFit
         
         // 라벨 설정
-        let label = UILabel()
+        let nameLabel = UILabel()
         
-        label.text = "\(product.name)\n\(product.price)"
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .black
-        label.numberOfLines = 0
+        nameLabel.text = "\(product.name)"
+        nameLabel.textAlignment = .left
+        nameLabel.font = .systemFont(ofSize: 14)
+        nameLabel.textColor = UIColor(named: "950")
+        
+        let priceLabel = UILabel()
+        
+        priceLabel.text = "\(product.price)"
+        priceLabel.textAlignment = .left
+        priceLabel.font = .boldSystemFont(ofSize: 14)
+        priceLabel.textColor = UIColor(named: "950")
         
         let button = UIButton()
         if let buttonImage = UIImage(named: "addButtonIcon") {
@@ -309,13 +314,14 @@ class PageCell: UICollectionViewCell {
         // 이미지 뷰와 라벨을 세로로 배치할 스택 뷰 설정
         let productStackView = UIStackView()
         productStackView.axis = .vertical
-        productStackView.spacing = 8
+        productStackView.spacing = 3
         productStackView.alignment = .fill
         productStackView.distribution = .fill
 //        productStackView.backgroundColor = .white
         // 이미지뷰와 라벨을 스택뷰에 추가
         productStackView.addArrangedSubview(imageView)
-        productStackView.addArrangedSubview(label)
+        productStackView.addArrangedSubview(nameLabel)
+        productStackView.addArrangedSubview(priceLabel)
         
         // 상품 뷰에 스택뷰 추가
         productView.addSubview(productStackView)
@@ -339,7 +345,7 @@ class PageCell: UICollectionViewCell {
         
         // 이미지 뷰 제약 설정
         imageView.snp.makeConstraints { make in
-            make.height.equalTo(60) // 이미지 뷰의 고정 높이
+            make.height.equalTo(90) // 이미지 뷰의 고정 높이
             
 //            let size = productStackView.frame.height
 //            make.height.equalTo(size)
@@ -347,8 +353,12 @@ class PageCell: UICollectionViewCell {
         }
         
         // 라벨 제약 설정
-        label.snp.makeConstraints { make in
-            make.height.equalTo(40) // 라벨의 고정 높이
+        nameLabel.snp.makeConstraints { make in
+            make.height.equalTo(20)
+        }
+        
+        priceLabel.snp.makeConstraints { make in
+            make.height.equalTo(20)// 라벨의 고정 높이
         }
         return productView
     }
