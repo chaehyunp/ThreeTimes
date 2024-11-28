@@ -93,7 +93,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "00")
         
         setupNavigationBar()
         setupSegmentedControl()
@@ -131,7 +131,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 
         // Initialize Collection View
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.backgroundColor = .white
+        collectionView.backgroundColor = UIColor(named: "100")
         collectionView.dataSource = self
         collectionView.delegate = self
 
@@ -192,7 +192,7 @@ class ProductCell: UICollectionViewCell {
     // UI Components
     private let productUIView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(named: "00")
         view.layer.cornerRadius = 6
         view.layer.borderColor = UIColor.lightGray.cgColor
         view.layer.borderWidth = 1
@@ -201,7 +201,7 @@ class ProductCell: UICollectionViewCell {
     
     private let productImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = UIColor(red: 245.0 / 255.0, green: 245.0 / 255.0, blue: 245.0 / 255.0, alpha: 1.0)
+        imageView.backgroundColor = UIColor(named: "100")
         imageView.layer.cornerRadius = 6
         imageView.clipsToBounds = true
         return imageView
@@ -209,8 +209,8 @@ class ProductCell: UICollectionViewCell {
     
     private let productNameLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .white
-        label.textColor = .black
+        label.backgroundColor = UIColor(named: "00")
+        label.textColor = UIColor(named: "950")
         label.font = .systemFont(ofSize: 14)
         label.textAlignment = .left
         return label
@@ -218,8 +218,8 @@ class ProductCell: UICollectionViewCell {
     
     private let productPriceLabel: UILabel = {
         let label = UILabel()
-        label.backgroundColor = .white
-        label.textColor = .black
+        label.backgroundColor = UIColor(named: "00")
+        label.textColor = UIColor(named: "950")
         label.font = .boldSystemFont(ofSize: 14)
         label.textAlignment = .left
         return label
@@ -230,8 +230,9 @@ class ProductCell: UICollectionViewCell {
         if let buttonImage = UIImage(named: "addButtonIcon") {
             button.setBackgroundImage(buttonImage, for: .normal)
         }
-        button.layer.cornerRadius = 17
-        button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
+        button.clipsToBounds = true
+        button.imageView?.contentMode = .scaleAspectFill
+       // button.addTarget(self, action: #selector(addButtonTapped), for: .touchUpInside)
         return button
     }()
     
