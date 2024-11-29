@@ -45,7 +45,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 //        setupTempButtons()
         
         // Initialize Filtered Data
-        filteredProducts = productCategories.flatMap { $0.value }
+//        filteredProducts = productCategories.flatMap { $0.value }
+        filteredProducts = ProductData.productCategories["fishBun"] ?? []
+        collectionView.reloadData()
         updatePageControl()
     }
     
@@ -70,15 +72,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 }
                 self.calculatePrice(index: index)
                 // 0이 되면 삭제
+
                 if  self.bottomView.cartView.data[index].quantity == 0 {
                     self.bottomView.cartView.data.remove(at: index)
                     bottomView.cartView.reloadData()
+                    bottomView.cartView.checkRowEmpty()
+                    bottomView.updateCartHeight()
                 }
             case "delete":
                 self.bottomView.cartView.data.remove(at: index)
-                if self.bottomView.cartView.data.count != 0 {
-                    bottomView.cartView.reloadData()
-                }
+                bottomView.cartView.reloadData()
                 bottomView.cartView.checkRowEmpty()
                 bottomView.updateCartHeight()
             default:
@@ -97,6 +100,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         bottomView.buttons.emptyButtonTapped = {
             [weak self] in
             self?.bottomView.cartView.emptyCart()
+            self?.updatePriceAndQuantity()
             self?.bottomView.updateCartHeight()
         }
         bottomView.snp.makeConstraints{ make in
@@ -108,6 +112,27 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     // MARK: - Setup Navigation Bar
     private func setupNavigationBar() {
         navigationItem.title = "WINDYJUNG"
+        
+        let callButton = UIBarButtonItem(image: UIImage(systemName: "bell.fill"),
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(callStaffButtonTapped))
+        
+        callButton.tintColor = UIColor(named: "400")
+        navigationItem.rightBarButtonItem = callButton
+    }
+    
+    @objc private func callStaffButtonTapped() {
+        let title = NSLocalizedString("callModalTitle", comment: "")
+        let message = NSLocalizedString("callModalMessage", comment: "")
+        let callText = NSLocalizedString("call", comment: "")
+        let cancelText = NSLocalizedString("cancel", comment: "")
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let callAction = UIAlertAction(title: callText, style: .default, handler: { _ in print("call staff") })
+        let cancelAction = UIAlertAction(title: cancelText, style: .cancel, handler: { _ in print("canceled call staff") })
+        alert.addAction(callAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
     }
                                     
     // MARK: - Setup ScrollView
@@ -135,7 +160,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     private func setupSegmentedControl() {
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
-        
+
         view.addSubview(segmentedControl)
         segmentedControl.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8)
@@ -211,12 +236,17 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     @objc private func segmentChanged(_ sender: UISegmentedControl) {
         let selectedCategory = ProductData.segmentedControlTitles[sender.selectedSegmentIndex]
         
-        if selectedCategory == "전체" {
-            filteredProducts = productCategories.flatMap { $0.value }
-        } else {
-            filteredProducts = productCategories[selectedCategory] ?? []
-        }
+//        if selectedCategory == "전체" {
+//            filteredProducts = productCategories.flatMap { $0.value }
+//        } else {
+//            filteredProducts = productCategories[selectedCategory] ?? []
+//        }
+//        
+//        collectionView.reloadData()
         
+        
+        filteredProducts = ProductData.productCategories[selectedCategory] ?? []
+        collectionView.setContentOffset(.zero, animated: false)
         collectionView.reloadData()
         updatePageControl()
     }
@@ -296,14 +326,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             return price
         }()
     }
-
-    //    //셀 삭제 메서드 연결
-    //    @objc private func removeLastProduct() {
-//        guard !bottomView.cartView.data.isEmpty else { return }
-//        bottomView.cartView.removeProduct(at: bottomView.cartView.data.count - 1)
-//        bottomView.updateCartHeight()
-//    }
     
+     // MARK: - Alert when the purchaseButtonTapped
+     func purchaseButtonTapped() {
+         let title = NSLocalizedString("modalTitle", comment: "")
+         let message = NSLocalizedString("modalMessage", comment: "")
+         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+         let confirmAction = UIAlertAction(title: "OK", style: .default, handler: { _ in print("Complete Payment") })
+         alert.addAction(confirmAction)
+         present(alert, animated: true)
+     }  
 
 
 // MARK: - Custom Page Cell
@@ -416,8 +448,8 @@ class PageCell: UICollectionViewCell {
         priceLabel.textColor = UIColor(named: "950")
         
         let button = UIButton()
-        if let buttonImage = UIImage(named: "addButtonIcon") {
-            button.setBackgroundImage(buttonImage, for: .normal)
+        if let buttonImage = UIImage(named: "IcPlus") {
+            button.setImage(buttonImage, for: .normal)
         }
         //버튼 액션 설정
         button.addTarget(self, action:#selector(didTapAddButton(_:)), for: .touchUpInside)
@@ -453,7 +485,7 @@ class PageCell: UICollectionViewCell {
         productView.addSubview(button)
         button.snp.makeConstraints { make in
             make.bottom.trailing.equalToSuperview().inset(8) // 오른쪽 아래에 8px 여백 설정
-            make.width.height.equalTo(34) // 버튼 크기 설정
+            make.width.height.equalTo(36) // 버튼 크기 설정
         }
         
         // 이미지 뷰 제약 설정

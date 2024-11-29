@@ -26,6 +26,7 @@ class CartTableViewCell: UITableViewCell {
     //productRow의 데이터 구성
     func configure(with product: CartData) {
         self.productRow.updateData(product: product)
+        updateMinusButton() 
     }
     //테이블뷰 셋업
     private func setupTableView() {
@@ -36,6 +37,15 @@ class CartTableViewCell: UITableViewCell {
             self?.rowTapped?(action)
         }
     }
+    //akdlsjtm 버튼
+    private func updateMinusButton() {
+        if productRow.product.quantity == 1 {
+            productRow.changeMinusToDelete()
+        } else {
+            productRow.resetMinusButton()
+        }
+    }
+    
     //셀의 레이아웃 설정
     private func setupLayout() {
             productRow.translatesAutoresizingMaskIntoConstraints = false
@@ -46,4 +56,5 @@ class CartTableViewCell: UITableViewCell {
                 productRow.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
             ])
         }
+    
 }
