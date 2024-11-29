@@ -10,6 +10,7 @@ import UIKit
 class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     var data: [CartData] = [] //추후 실제 데이터로 변경
     var cartUpdate: ((Int, String) -> Void)?
+    
     init() {
         super.init(frame: .zero, style: .plain)
         setupTableView()
@@ -33,6 +34,7 @@ class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         cell.rowTapped = { [weak self] action in
             self?.cartUpdate?(indexPath.row, action)
         }
+        
         return cell
     }
     //행 추가 메서드
@@ -68,6 +70,7 @@ class CartTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
         self.isScrollEnabled = false //스크롤 비활성화
         self.dataSource = self
         self.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.identifier)
+        
     }
     //테이블이 비었을 때 배경에 레이블 띄움
     func checkRowEmpty() {
