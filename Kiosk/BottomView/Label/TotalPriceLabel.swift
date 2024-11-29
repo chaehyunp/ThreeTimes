@@ -52,7 +52,7 @@ class TotalPriceLabel: UIView {
         self.priceLabel.text = "\(formatWithComma(self.price))\(NSLocalizedString("won", comment: ""))"
     }
     
-    func formatWithComma(_ number: Int) -> String {
+    private func formatWithComma(_ number: Int) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal // 자릿수 쉼표 스타일
         return formatter.string(from: NSNumber(value: number)) ?? "\(number)"
