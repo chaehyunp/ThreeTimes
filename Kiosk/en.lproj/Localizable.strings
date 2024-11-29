@@ -1,0 +1,47 @@
+
+"won" = "won";
+"total" = "Total";
+"gae" = "";
+"cancelAll" = "Cancel all";
+"pay" = "Pay";
+"payment" = "Payment";
+
+"modalTitle" = "Complete payment";
+"modalMessage" = "Your order has been paid for!";
+"callModalTitle" = "Help";
+"callModalMessage" = "Would you like to call for a staff?";
+"call" = "call";
+"cancel" = "cancel";
+"empty" = "Empty";
+
+"fishBun" = "FishBun";
+"fishBunRedBean" = "Red bean Flavor";
+"fishBunCustard" = "Custard Flavor";
+"fishBunCheese" = "Cheese Flavor";
+"fishBunChoco" = "Chocolate Flavor";
+"fishBunPizza" = "Pizza Flavor";
+"fishBunMatcha" = "Matcha Flavor";
+
+
+"hoppang" = "Hoppang";
+"hoppangHoney" = "Honey Hotteok";
+"hoppangBubble" = "Bubble Hotteok";
+"hoppangRedBean" = "Red bean Hoppang";
+"hoppangMatcha" = "Matcha Hoppang";
+"hoppangChoco" = "Chocolate Hoppang";
+
+
+"skewer" = "Skewer";
+"skewerSoySauce" = "Soy sauce Flavor";
+"skewerGreenOnion" = "Green onion Flavor";
+"skewerHotFried" = "Hot Fried Flavor";
+"skewerFried" = "Fried Flavor";
+"skewerHotBar" = "Hot bar";
+
+
+"else" = "Else";
+"roastedChestnuts" = "Roasted Chestnuts";
+"roastedSweetPotatoes" = "Roasted Sweet Potatoes";
+"takoyaki" = "Takoyaki";
+"tenWonBread" = "Ten won bread";
+"deliManju" = "Deli manju";
