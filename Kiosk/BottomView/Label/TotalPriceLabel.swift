@@ -10,7 +10,7 @@ import UIKit
 class TotalPriceLabel: UIView {
     private var purchaseLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("total", comment: "")
+        label.text = NSLocalizedString("payment", comment: "")
         label.textColor = UIColor(named: "950")
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.textAlignment = .left

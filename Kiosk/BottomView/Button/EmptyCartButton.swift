@@ -18,15 +18,16 @@ class EmptyButton: UIButton  {
     }
     //버튼 셋업
     func setupButton() {
+        let color = UIColor(named: "sub2")
         setTitle(NSLocalizedString("cancelAll", comment: ""), for: .normal)
-        setTitleColor(.black, for: .normal)
+        setTitleColor(color, for: .normal)
         setTitleColor(.gray, for: .highlighted)
-        titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
-        backgroundColor = .white
+        titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+//        backgroundColor = .white
         layer.cornerRadius = 15
         tintColor = .black
         //검정 테두리 추가
-        layer.borderColor = UIColor.black.cgColor
+        layer.borderColor = UIColor(named: "sub2")?.cgColor
         layer.borderWidth = 2
         layer.cornerRadius = 15
         //클로저콜백

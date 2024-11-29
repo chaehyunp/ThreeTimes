@@ -111,7 +111,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
    
     // MARK: - Setup Navigation Bar
     private func setupNavigationBar() {
-        navigationItem.title = "WINDYJUNG"
+        navigationItem.title = "WINDYJEONG"
         
         let callButton = UIBarButtonItem(image: UIImage(systemName: "bell.fill"),
                                          style: .plain,
@@ -439,6 +439,11 @@ class PageCell: UICollectionViewCell {
         nameLabel.textAlignment = .left
         nameLabel.font = .systemFont(ofSize: 14)
         nameLabel.textColor = UIColor(named: "950")
+        nameLabel.numberOfLines = 1
+        nameLabel.adjustsFontSizeToFitWidth = true
+//        nameLabel.isUserInteractionEnabled = true
+//        nameLabel.isEnabled = true
+        
         
         let priceLabel = UILabel()
         let won = NSLocalizedString("won", comment: "")
@@ -500,6 +505,7 @@ class PageCell: UICollectionViewCell {
         
         // 라벨 제약 설정
         nameLabel.snp.makeConstraints { make in
+            make.right.equalTo(button.snp.left)
             make.height.equalTo(20)
         }
         

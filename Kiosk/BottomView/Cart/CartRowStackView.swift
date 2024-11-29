@@ -107,11 +107,11 @@ class CartRowStackView: UIStackView {
         }
         
         minusButton.snp.makeConstraints { make in
-            make.width.height.equalTo(30)
+            make.width.height.equalTo(26)
         }
         
         plusButton.snp.makeConstraints { make in
-            make.width.height.equalTo(30)
+            make.width.height.equalTo(26)
         }
         
         quantityLabel.snp.makeConstraints { make in
