@@ -7,7 +7,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     // 2. 데이터 붙이기 - 일러스트 포함 OK
     // 3. 플러스 버튼 눌렀을때 아래에 상품 추가
     // 4. 바텀뷰 버튼 이벤트 - 전체 취소, 알러트
-
+    
     // MARK: - Properties
     private let scrollView = UIScrollView()
     private let spacingView = UIView()
@@ -42,10 +42,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         setupBottomView()
         
         // 2-2-1 임시 추가 삭제 버튼
-//        setupTempButtons()
+        //        setupTempButtons()
         
         // Initialize Filtered Data
-//        filteredProducts = productCategories.flatMap { $0.value }
+        //        filteredProducts = productCategories.flatMap { $0.value }
         filteredProducts = ProductData.productCategories["fishBun"] ?? []
         collectionView.reloadData()
         updatePageControl()
@@ -72,7 +72,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 }
                 self.calculatePrice(index: index)
                 // 0이 되면 삭제
-
+                
                 if  self.bottomView.cartView.data[index].quantity == 0 {
                     self.bottomView.cartView.data.remove(at: index)
                     bottomView.cartView.reloadData()
@@ -87,11 +87,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             default:
                 break
             }
-//             UI 업데이트
+            //             UI 업데이트
             updatePriceAndQuantity()
             if action == "delete" || self.bottomView.cartView.data.isEmpty {
                 self.bottomView.cartView.reloadData() // 전체 갱신
-               
+                
             } else {
                 let indexPath = IndexPath(row: index, section: 0)
                 self.bottomView.cartView.reloadRows(at: [indexPath], with: .automatic) // 특정 셀만 갱신
@@ -108,7 +108,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
-   
+    
     // MARK: - Setup Navigation Bar
     private func setupNavigationBar() {
         navigationItem.title = "WINDYJUNG"
@@ -134,7 +134,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         alert.addAction(cancelAction)
         present(alert, animated: true)
     }
-                                    
+    
     // MARK: - Setup ScrollView
     private func setupScrollView() {
         view.addSubview(scrollView)
@@ -142,7 +142,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         scrollView.showsVerticalScrollIndicator = false
         
         scrollView.snp.makeConstraints { make in
-//            make.top.equalTo(segmentedControl.snp.bottom)
+            //            make.top.equalTo(segmentedControl.snp.bottom)
             make.top.equalTo(spacingView.snp.bottom)
             make.leading.trailing.equalToSuperview()
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
@@ -160,16 +160,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     private func setupSegmentedControl() {
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
-
+        
         view.addSubview(segmentedControl)
         segmentedControl.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8)
             make.leading.trailing.equalToSuperview().inset(16)
             make.height.equalTo(36)
         }
-
+        
         view.addSubview(spacingView)
-
+        
         spacingView.snp.makeConstraints{ make in
             make.top.equalTo(segmentedControl.snp.bottom)
             make.leading.trailing.equalToSuperview()
@@ -196,15 +196,15 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         collectionView.delegate = self
         collectionView.register(PageCell.self, forCellWithReuseIdentifier: PageCell.identifier)
         
-
+        
         contentView.addSubview(collectionView)
         collectionView.snp.makeConstraints { make in
-//            make.top.equalTo(segmentedControl.snp.bottom).offset(16)
+            //            make.top.equalTo(segmentedControl.snp.bottom).offset(16)
             make.top.equalTo(scrollView.snp.top)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(400)
         }
-
+        
     }
     
     // MARK: - Setup Page Control
@@ -236,13 +236,13 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     @objc private func segmentChanged(_ sender: UISegmentedControl) {
         let selectedCategory = ProductData.segmentedControlTitles[sender.selectedSegmentIndex]
         
-//        if selectedCategory == "전체" {
-//            filteredProducts = productCategories.flatMap { $0.value }
-//        } else {
-//            filteredProducts = productCategories[selectedCategory] ?? []
-//        }
-//        
-//        collectionView.reloadData()
+        //        if selectedCategory == "전체" {
+        //            filteredProducts = productCategories.flatMap { $0.value }
+        //        } else {
+        //            filteredProducts = productCategories[selectedCategory] ?? []
+        //        }
+        //
+        //        collectionView.reloadData()
         
         
         filteredProducts = ProductData.productCategories[selectedCategory] ?? []
@@ -318,7 +318,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         updatePriceAndQuantity()
         bottomView.updateCartHeight()
     }
-
+    
     //금액 계산
     private func calculatePrice(index: Int) {
         self.bottomView.cartView.data[index].price = {
@@ -327,189 +327,190 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         }()
     }
     
-     // MARK: - Alert when the purchaseButtonTapped
-     func purchaseButtonTapped() {
-         let title = NSLocalizedString("modalTitle", comment: "")
-         let message = NSLocalizedString("modalMessage", comment: "")
-         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-         let confirmAction = UIAlertAction(title: "OK", style: .default, handler: { _ in print("Complete Payment") })
-         alert.addAction(confirmAction)
-         present(alert, animated: true)
-     }  
-
-
-// MARK: - Custom Page Cell
-class PageCell: UICollectionViewCell {
-    var addToCart: ((Int) -> Void)?//상품 추가용 클로저
-    
-    static let identifier = "PageCell"
-    
-    private let productUIView = UIView()
-    private let mainStackView = UIStackView()
-    
-    private let productImageView = UIImageView()
-    private let productNameLabel = UILabel()
-    private let productPriceLabel = UILabel()
-    private let addButton = UIButton()
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupCell()
+    // MARK: - Alert when the purchaseButtonTapped
+    func purchaseButtonTapped() {
+        let title = NSLocalizedString("modalTitle", comment: "")
+        let message = NSLocalizedString("modalMessage", comment: "")
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let confirmAction = UIAlertAction(title: "OK", style: .default, handler: { _ in print("Complete Payment") })
+        alert.addAction(confirmAction)
+        present(alert, animated: true)
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
-    private func setupCell() {
-        contentView.addSubview(productUIView)
-        productUIView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(16)
+    // MARK: - Custom Page Cell
+    class PageCell: UICollectionViewCell {
+        var addToCart: ((Int) -> Void)?//상품 추가용 클로저
+        
+        static let identifier = "PageCell"
+        
+        private let productUIView = UIView()
+        private let mainStackView = UIStackView()
+        
+        private let productImageView = UIImageView()
+        private let productNameLabel = UILabel()
+        private let productPriceLabel = UILabel()
+        private let addButton = UIButton()
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            setupCell()
         }
         
-        productUIView.addSubview(mainStackView)
-        mainStackView.axis = .vertical
-        mainStackView.spacing = 10
-        mainStackView.distribution = .fillEqually
-        mainStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        required init?(coder: NSCoder) {
+            fatalError("init(coder:) has not been implemented")
         }
         
-        productUIView.snp.makeConstraints { make in
-            make.height.equalTo(250)  // 원하는 높이 설정
-        }
-        
-        // Configure each UI component here (productImageView, productNameLabel, productPriceLabel, addButton)
-    }
-    
-    func configure(with products: [Product]) {
-        // 기존에 추가된 뷰 제거
-        mainStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        
-        // 최대 4개의 제품을 2열 2행으로 배치
-        let rows = 2
-        let columns = 2
-        let totalItems = min(products.count, rows * columns)
-        
-        for rowIndex in 0..<rows {
-            // 각 행을 위한 수평 스택 뷰 생성
-            let rowStackView = UIStackView()
-            rowStackView.axis = .horizontal
-            rowStackView.spacing = 16
-            rowStackView.distribution = .fillEqually
-            
-            for columnIndex in 0..<columns {
-                let itemIndex = rowIndex * columns + columnIndex
-                if itemIndex < totalItems {
-                    // 제품에 대한 네모 박스 생성
-                    let productView = createProductView(for: products[itemIndex], index: itemIndex)
-                    rowStackView.addArrangedSubview(productView)
-                } else {
-                    // 빈 뷰 추가 (필요 시)
-                    let emptyView = UIView()
-                    rowStackView.addArrangedSubview(emptyView)
-                }
+        private func setupCell() {
+            contentView.addSubview(productUIView)
+            productUIView.snp.makeConstraints { make in
+                make.edges.equalToSuperview().inset(16)
             }
-            mainStackView.addArrangedSubview(rowStackView)
-        }
-    }
-    
-    // MARK: - Helper: Product View 생성
-    private func createProductView(for product: Product, index: Int) -> UIView {
-        // 전체 상품 뷰 설정
-        let productView = UIView()
-        productView.layer.cornerRadius = 10
-        productView.layer.borderWidth = 1
-        productView.layer.borderColor = UIColor.lightGray.cgColor
-        productView.backgroundColor = UIColor(named: "00")
-        productView.clipsToBounds = true
-        
-        let imageView = UIImageView()
-        imageView.backgroundColor = UIColor(named: "100")
-        imageView.layer.cornerRadius = 6
-        imageView.clipsToBounds = true
-        imageView.image = UIImage(named: product.img) // 예시 이미지
-        imageView.contentMode = .scaleAspectFit
-        
-        // 라벨 설정
-        let nameLabel = UILabel()
-        
-        nameLabel.text = NSLocalizedString(product.name, comment: "")
-        nameLabel.textAlignment = .left
-        nameLabel.font = .systemFont(ofSize: 14)
-        nameLabel.textColor = UIColor(named: "950")
-        
-        let priceLabel = UILabel()
-        let won = NSLocalizedString("won", comment: "")
-        
-        priceLabel.text = "\(product.price)\(won)"
-        priceLabel.textAlignment = .left
-        priceLabel.font = .boldSystemFont(ofSize: 14)
-        priceLabel.textColor = UIColor(named: "950")
-        
-        let button = UIButton()
-        if let buttonImage = UIImage(named: "IcPlus") {
-            button.setImage(buttonImage, for: .normal)
-        }
-        //버튼 액션 설정
-        button.addTarget(self, action:#selector(didTapAddButton(_:)), for: .touchUpInside)
-        button.layer.cornerRadius = 17
-        //버튼 태그 설정
-        button.tag = index
-        // 이미지 뷰와 라벨을 세로로 배치할 스택 뷰 설정
-        let productStackView = UIStackView()
-        productStackView.axis = .vertical
-        productStackView.spacing = 3
-        productStackView.alignment = .fill
-        productStackView.distribution = .fill
-        //        productStackView.backgroundColor = .white
-        // 이미지뷰와 라벨을 스택뷰에 추가
-        productStackView.addArrangedSubview(imageView)
-        productStackView.addArrangedSubview(nameLabel)
-        productStackView.addArrangedSubview(priceLabel)
-        
-        // 상품 뷰에 스택뷰 추가
-        productView.addSubview(productStackView)
-        
-        // productView 크기 조정 (height 변경)
-        productView.snp.makeConstraints { make in
-            make.height.equalTo(250)  // 예시로 높이를 220으로 설정 (원하는 높이로 변경 가능)
-        }
-        
-        // 스택뷰 제약 설정
-        productStackView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview().inset(8) // 상단과 좌우에 8px 여백 설정
-        }
-        
-        // 버튼을 오른쪽 아래에 배치하기 위해 제약 설정
-        productView.addSubview(button)
-        button.snp.makeConstraints { make in
-            make.bottom.trailing.equalToSuperview().inset(8) // 오른쪽 아래에 8px 여백 설정
-            make.width.height.equalTo(36) // 버튼 크기 설정
-        }
-        
-        // 이미지 뷰 제약 설정
-        imageView.snp.makeConstraints { make in
-            make.height.equalTo(90) // 이미지 뷰의 고정 높이
             
-            //            let size = productStackView.frame.height
-            //            make.height.equalTo(size)
-            make.width.equalToSuperview() // 이미지 뷰의 너비를 부모 뷰에 맞게 설정
+            productUIView.addSubview(mainStackView)
+            mainStackView.axis = .vertical
+            mainStackView.spacing = 10
+            mainStackView.distribution = .fillEqually
+            mainStackView.snp.makeConstraints { make in
+                make.edges.equalToSuperview()
+            }
+            
+            productUIView.snp.makeConstraints { make in
+                make.height.equalTo(250)  // 원하는 높이 설정
+            }
+            
+            // Configure each UI component here (productImageView, productNameLabel, productPriceLabel, addButton)
         }
         
-        // 라벨 제약 설정
-        nameLabel.snp.makeConstraints { make in
-            make.height.equalTo(20)
+        func configure(with products: [Product]) {
+            // 기존에 추가된 뷰 제거
+            mainStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+            
+            // 최대 4개의 제품을 2열 2행으로 배치
+            let rows = 2
+            let columns = 2
+            let totalItems = min(products.count, rows * columns)
+            
+            for rowIndex in 0..<rows {
+                // 각 행을 위한 수평 스택 뷰 생성
+                let rowStackView = UIStackView()
+                rowStackView.axis = .horizontal
+                rowStackView.spacing = 16
+                rowStackView.distribution = .fillEqually
+                
+                for columnIndex in 0..<columns {
+                    let itemIndex = rowIndex * columns + columnIndex
+                    if itemIndex < totalItems {
+                        // 제품에 대한 네모 박스 생성
+                        let productView = createProductView(for: products[itemIndex], index: itemIndex)
+                        rowStackView.addArrangedSubview(productView)
+                    } else {
+                        // 빈 뷰 추가 (필요 시)
+                        let emptyView = UIView()
+                        rowStackView.addArrangedSubview(emptyView)
+                    }
+                }
+                mainStackView.addArrangedSubview(rowStackView)
+            }
         }
         
-        priceLabel.snp.makeConstraints { make in
-            make.height.equalTo(20)// 라벨의 고정 높이
+        // MARK: - Helper: Product View 생성
+        private func createProductView(for product: Product, index: Int) -> UIView {
+            // 전체 상품 뷰 설정
+            let productView = UIView()
+            productView.layer.cornerRadius = 10
+            productView.layer.borderWidth = 1
+            productView.layer.borderColor = UIColor.lightGray.cgColor
+            productView.backgroundColor = UIColor(named: "00")
+            productView.clipsToBounds = true
+            
+            let imageView = UIImageView()
+            imageView.backgroundColor = UIColor(named: "100")
+            imageView.layer.cornerRadius = 6
+            imageView.clipsToBounds = true
+            imageView.image = UIImage(named: product.img) // 예시 이미지
+            imageView.contentMode = .scaleAspectFit
+            
+            // 라벨 설정
+            let nameLabel = UILabel()
+            
+            nameLabel.text = NSLocalizedString(product.name, comment: "")
+            nameLabel.textAlignment = .left
+            nameLabel.font = .systemFont(ofSize: 14)
+            nameLabel.textColor = UIColor(named: "950")
+            
+            let priceLabel = UILabel()
+            let won = NSLocalizedString("won", comment: "")
+            
+            priceLabel.text = "\(product.price)\(won)"
+            priceLabel.textAlignment = .left
+            priceLabel.font = .boldSystemFont(ofSize: 14)
+            priceLabel.textColor = UIColor(named: "950")
+            
+            let button = UIButton()
+            if let buttonImage = UIImage(named: "IcPlus") {
+                button.setImage(buttonImage, for: .normal)
+            }
+            //버튼 액션 설정
+            button.addTarget(self, action:#selector(didTapAddButton(_:)), for: .touchUpInside)
+            button.layer.cornerRadius = 17
+            //버튼 태그 설정
+            button.tag = index
+            // 이미지 뷰와 라벨을 세로로 배치할 스택 뷰 설정
+            let productStackView = UIStackView()
+            productStackView.axis = .vertical
+            productStackView.spacing = 3
+            productStackView.alignment = .fill
+            productStackView.distribution = .fill
+            //        productStackView.backgroundColor = .white
+            // 이미지뷰와 라벨을 스택뷰에 추가
+            productStackView.addArrangedSubview(imageView)
+            productStackView.addArrangedSubview(nameLabel)
+            productStackView.addArrangedSubview(priceLabel)
+            
+            // 상품 뷰에 스택뷰 추가
+            productView.addSubview(productStackView)
+            
+            // productView 크기 조정 (height 변경)
+            productView.snp.makeConstraints { make in
+                make.height.equalTo(250)  // 예시로 높이를 220으로 설정 (원하는 높이로 변경 가능)
+            }
+            
+            // 스택뷰 제약 설정
+            productStackView.snp.makeConstraints { make in
+                make.top.leading.trailing.equalToSuperview().inset(8) // 상단과 좌우에 8px 여백 설정
+            }
+            
+            // 버튼을 오른쪽 아래에 배치하기 위해 제약 설정
+            productView.addSubview(button)
+            button.snp.makeConstraints { make in
+                make.bottom.trailing.equalToSuperview().inset(8) // 오른쪽 아래에 8px 여백 설정
+                make.width.height.equalTo(36) // 버튼 크기 설정
+            }
+            
+            // 이미지 뷰 제약 설정
+            imageView.snp.makeConstraints { make in
+                make.height.equalTo(90) // 이미지 뷰의 고정 높이
+                
+                //            let size = productStackView.frame.height
+                //            make.height.equalTo(size)
+                make.width.equalToSuperview() // 이미지 뷰의 너비를 부모 뷰에 맞게 설정
+            }
+            
+            // 라벨 제약 설정
+            nameLabel.snp.makeConstraints { make in
+                make.height.equalTo(20)
+            }
+            
+            priceLabel.snp.makeConstraints { make in
+                make.height.equalTo(20)// 라벨의 고정 높이
+            }
+            return productView
         }
-        return productView
+        
+        @objc private func didTapAddButton(_ sender: UIButton) {
+            addToCart?(sender.tag)
+        }
+        
     }
-    
-    @objc private func didTapAddButton(_ sender: UIButton) {
-        addToCart?(sender.tag)
-    }
-    
 }
