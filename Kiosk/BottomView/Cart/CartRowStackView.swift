@@ -51,7 +51,7 @@ class CartRowStackView: UIStackView {
     
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.text = String(product.price)
+        label.text = "\(String(product.price)) \(NSLocalizedString("won", comment:""))"
         label.font = .systemFont(ofSize: 16)
         label.textColor = UIColor(named: "600")
         label.textAlignment = .right
@@ -126,8 +126,14 @@ class CartRowStackView: UIStackView {
     func updateData(product: CartData) {
         self.product = product
         self.productLabel.text = product.product.name
-        self.priceLabel.text = String(product.price)
+        self.priceLabel.text = "\(formatWithComma(product.price)) ₩"
         self.quantityLabel.text = String(product.quantity)
+    }
+    
+    private func formatWithComma(_ number: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal // 자릿수 쉼표 스타일
+        return formatter.string(from: NSNumber(value: number)) ?? "\(number)"
     }
     
     func changeMinusToDelete() {
