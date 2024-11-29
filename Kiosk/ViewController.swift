@@ -1,14 +1,13 @@
 import UIKit
 import SnapKit
 
-class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+class ViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, ButtonStackDelegate {
     
     // 1. 스크롤  OK
     // 2. 데이터 붙이기 - 일러스트 포함 OK
     // 3. 플러스 버튼 눌렀을때 아래에 상품 추가
     // 4. 바텀뷰 버튼 이벤트 - 전체 취소, 알러트
 
-    
     // MARK: - Properties
     private let scrollView = UIScrollView()
     private let spacingView = UIView()
@@ -18,12 +17,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     private let contentView = UIView()
     private let bottomView = BottomView()
     
+    
     // Sample Data
     private let productCategories = ProductData.productCategories
     private var filteredProducts: [Product] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        bottomView.buttons.delegate = self
+        
         view.backgroundColor = UIColor(named: "00")
         
         // 1. 네비게이션 + 세그먼트 + 스크롤 뷰
@@ -103,38 +106,8 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     // MARK: - Setup Navigation Bar
     private func setupNavigationBar() {
         navigationItem.title = "WINDYJUNG"
-        
-//        let langButton = UIBarButtonItem(image: UIImage(systemName: "globe"),
-//                                                        style: .plain,
-//                                                        target: self,
-//                                                        action: #selector(langButtonTapped))
-//        langButton.tintColor = UIColor(named: "600")
-//                                         
-//        navigationItem.rightBarButtonItem = langButton
     }
-                                         
-//    @objc private func langButtonTapped() {
-//        let title = lang == .KO ? "Change to English?" : "한국어로 변경하시겠습니까?"
-//        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-//        
-//        let confirmAction = UIAlertAction(title: lang == .KO ? "Yes" : "예",
-//                                          style: .default) { _ in
-//                self.lang = self.lang == .KO ? .EN : .KO
-//                UserDefaults.standard.set([self.lang.rawValue], forKey: "AppLanguages")
-//                UserDefaults.standard.synchronize()
-//                self.setLanguage()
-//            }
-//            
-//            let cancelAction = UIAlertAction(title: self.lang == .KO ? "No" : "아니오",
-//                                             style: .cancel)
-//            
-//            alert.addAction(confirmAction)
-//            alert.addAction(cancelAction)
-//            self.present(alert, animated: true)
-//    }
-
-
-    
+                                    
     // MARK: - Setup ScrollView
     private func setupScrollView() {
         view.addSubview(scrollView)
@@ -313,6 +286,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         updatePriceAndQuantity()
         bottomView.updateCartHeight()
     }
+
     //금액 계산
     private func calculatePrice(index: Int) {
         self.bottomView.cartView.data[index].price = {
@@ -320,6 +294,24 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             return price
         }()
     }
+
+    //    //셀 삭제 메서드 연결
+    //    @objc private func removeLastProduct() {
+//        guard !bottomView.cartView.data.isEmpty else { return }
+//        bottomView.cartView.removeProduct(at: bottomView.cartView.data.count - 1)
+//        bottomView.updateCartHeight()
+//    }
+    
+//     // MARK: - Alert when the purchaseButtonTapped
+//     func purchaseButtonTapped() {
+//         let title = NSLocalizedString("modalTitle", comment: "")
+//         let message = NSLocalizedString("modalMessage", comment: "")
+//         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//         let confirmAction = UIAlertAction(title: "OK", style: .default, handler: { _ in print("Complete Payment") })
+//         alert.addAction(confirmAction)
+//         present(alert, animated: true)
+//     }  
+
 }
 
 // MARK: - Custom Page Cell
@@ -495,4 +487,5 @@ class PageCell: UICollectionViewCell {
     @objc private func didTapAddButton(_ sender: UIButton) {
         addToCart?(sender.tag)
     }
+    
 }
