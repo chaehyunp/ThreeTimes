@@ -125,7 +125,7 @@ class CartRowStackView: UIStackView {
     
     func updateData(product: CartData) {
         self.product = product
-        self.productLabel.text = product.product.name
+        self.productLabel.text = NSLocalizedString(product.product.name, comment: "") 
         self.priceLabel.text = "\(formatWithComma(product.price)) ₩"
         self.quantityLabel.text = String(product.quantity)
     }
