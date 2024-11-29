@@ -58,10 +58,17 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             switch action {
             case "increase":
                 self.bottomView.cartView.data[index].quantity += 1
+                self.bottomView.cartView.data[index].price = {
+                    let price = self.bottomView.cartView.data[index].quantity * (Int(self.bottomView.cartView.data[index].product.price) ?? 0)
+                    return price
+                }()
+                self.calculatePrice(index: index)
+                
             case "decrease":
                 if  self.bottomView.cartView.data[index].quantity >= 2 {
                     self.bottomView.cartView.data[index].quantity -= 1
                 }
+                self.calculatePrice(index: index)
 //                // 0이 되면 삭제
 //                if  self.bottomView.cartView.data[index].quantity == 0 {
 //                    self.bottomView.cartView.data.remove(at: index)
@@ -77,6 +84,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 break
             }
 //             UI 업데이트
+            updatePriceAndQuantity()
             if action == "delete" || self.bottomView.cartView.data.isEmpty {
                 self.bottomView.cartView.reloadData() // 전체 갱신
                
@@ -85,12 +93,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 self.bottomView.cartView.reloadRows(at: [indexPath], with: .automatic) // 특정 셀만 갱신
             }
         }
+        bottomView.buttons.emptyButtonTapped = {
+            [weak self] in
+            self?.bottomView.cartView.emptyCart()
+        }
         bottomView.snp.makeConstraints{ make in
             make.top.equalTo(pageControl.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
-    
+   
     // MARK: - Setup Navigation Bar
     private func setupNavigationBar() {
         navigationItem.title = "WINDYJUNG"
@@ -241,45 +253,48 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let pageIndex = round(scrollView.contentOffset.x / view.frame.width)
         pageControl.currentPage = Int(pageIndex)
     }
-    
-    //임시 추가 삭제 버튼들
-//    private func setupTempButtons() {
-//        let addButton = UIButton(type: .system)
-//        addButton.setTitle("상품 추가", for: .normal)
-//        addButton.addTarget(self, action: #selector(addProduct), for: .touchUpInside)
-//        
-//        let deleteButton = UIButton(type: .system)
-//        deleteButton.setTitle("상품 삭제", for: .normal)
-//        deleteButton.addTarget(self, action: #selector(removeLastProduct), for: .touchUpInside)
-//        
-//        let buttonStack = UIStackView(arrangedSubviews: [addButton, deleteButton])
-//        buttonStack.axis = .horizontal
-//        buttonStack.spacing = 20
-//        buttonStack.alignment = .center
-//        buttonStack.distribution = .equalSpacing
-//        
-//        scrollView.addSubview(buttonStack)
-//        buttonStack.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        NSLayoutConstraint.activate([
-//            buttonStack.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 20),
-//            buttonStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-    //        ])
-    //    }
-    
-    //셀 추가 메서드 연결
+    // MARK: button method
+    //금액, 수량 반영
+    private func updatePriceAndQuantity() {
+        self.calculateTotalPrice()
+        self.calculateTotalQuantity()
+    }
+    //총 수량 계산
+    private func calculateTotalQuantity() {
+        let totalQuantity = self.bottomView.cartView.data.map { $0.quantity }.reduce(0, +)
+        self.bottomView.quantityLabel.updateLabel(to: totalQuantity)
+        calculateTotalPrice()
+    }
+    //총 금액 계산
+    private func calculateTotalPrice() {
+        let totalPrice = self.bottomView.cartView.data.map { $0.price }.reduce(0, +)
+        self.bottomView.priceLabel.updateLabel(to: totalPrice)
+    }
+    //상품 추가
     private func addProduct(product: Product) {
         let newProduct = CartData(product: product)//새로운 셀 데이터
         if let existingIndex = bottomView.cartView.data.firstIndex(where: { $0.product.name == product.name }) {
             // 이미 존재하는 경우, 해당 CartData의 quantity를 증가
             bottomView.cartView.data[existingIndex].quantity += 1
             bottomView.cartView.reloadData()
+            self.calculatePrice(index: existingIndex)
+            
         } else {
             // 존재하지 않는 경우, 새로운 상품 추가
             bottomView.cartView.addProduct(newProduct)
         }
+        updatePriceAndQuantity()
         bottomView.updateCartHeight()
     }
+
+    //금액 계산
+    private func calculatePrice(index: Int) {
+        self.bottomView.cartView.data[index].price = {
+            let price = self.bottomView.cartView.data[index].quantity * (Int(self.bottomView.cartView.data[index].product.price) ?? 0)
+            return price
+        }()
+    }
+
     //    //셀 삭제 메서드 연결
     //    @objc private func removeLastProduct() {
 //        guard !bottomView.cartView.data.isEmpty else { return }
@@ -287,16 +302,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 //        bottomView.updateCartHeight()
 //    }
     
-    // MARK: - Alert when the purchaseButtonTapped
-    func purchaseButtonTapped() {
-        let title = NSLocalizedString("modalTitle", comment: "")
-        let message = NSLocalizedString("modalMessage", comment: "")
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let confirmAction = UIAlertAction(title: "OK", style: .default, handler: { _ in print("Complete Payment") })
-        alert.addAction(confirmAction)
-        present(alert, animated: true)
-    }
-    
+//     // MARK: - Alert when the purchaseButtonTapped
+//     func purchaseButtonTapped() {
+//         let title = NSLocalizedString("modalTitle", comment: "")
+//         let message = NSLocalizedString("modalMessage", comment: "")
+//         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+//         let confirmAction = UIAlertAction(title: "OK", style: .default, handler: { _ in print("Complete Payment") })
+//         alert.addAction(confirmAction)
+//         present(alert, animated: true)
+//     }  
+
 }
 
 // MARK: - Custom Page Cell

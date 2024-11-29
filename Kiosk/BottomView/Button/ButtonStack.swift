@@ -19,6 +19,8 @@ class ButtonStack: UIStackView {
     let emptyButton: EmptyButton = EmptyButton()
     let purchaseButton: PurchaseButton = PurchaseButton()
     
+    var emptyButtonTapped: (() -> Void)?
+    
     init() {
         super.init(frame: .zero)
         purchaseButton.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
@@ -38,6 +40,10 @@ class ButtonStack: UIStackView {
         [emptyButton, purchaseButton].forEach {
             addArrangedSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+        
+        emptyButton.buttonTapped = { [weak self] in
+            self?.emptyButtonTapped?()
         }
         
         NSLayoutConstraint.activate([
