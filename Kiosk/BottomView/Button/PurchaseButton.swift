@@ -17,7 +17,7 @@ class PurchaseButton: UIButton  {
     }
     //버튼 셋업
     func setupButton() {
-        setTitle(NSLocalizedString("payment", comment: ""), for: .normal)
+        setTitle(NSLocalizedString("pay", comment: ""), for: .normal)
         setTitleColor(.white, for: .normal)
         setTitleColor(.lightGray, for: .highlighted)
         titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
