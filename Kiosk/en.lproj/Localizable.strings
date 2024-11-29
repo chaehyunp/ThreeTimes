@@ -8,6 +8,10 @@
 
 "modalTitle" = "Complete payment";
 "modalMessage" = "Your order has been paid for!";
+"callModalTitle" = "Help";
+"callModalMessage" = "Would you like to call for a staff?";
+"call" = "call";
+"cancel" = "cancel";
 "empty" = "Empty";
 
 "fishBun" = "FishBun";

@@ -108,6 +108,27 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     // MARK: - Setup Navigation Bar
     private func setupNavigationBar() {
         navigationItem.title = "WINDYJUNG"
+        
+        let callButton = UIBarButtonItem(image: UIImage(systemName: "bell.fill"),
+                                         style: .plain,
+                                         target: self,
+                                         action: #selector(callStaffButtonTapped))
+        
+        callButton.tintColor = UIColor(named: "400")
+        navigationItem.rightBarButtonItem = callButton
+    }
+    
+    @objc private func callStaffButtonTapped() {
+        let title = NSLocalizedString("callModalTitle", comment: "")
+        let message = NSLocalizedString("callModalMessage", comment: "")
+        let callText = NSLocalizedString("call", comment: "")
+        let cancelText = NSLocalizedString("cancel", comment: "")
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let callAction = UIAlertAction(title: callText, style: .default, handler: { _ in print("call staff") })
+        let cancelAction = UIAlertAction(title: cancelText, style: .cancel, handler: { _ in print("canceled call staff") })
+        alert.addAction(callAction)
+        alert.addAction(cancelAction)
+        present(alert, animated: true)
     }
                                     
     // MARK: - Setup ScrollView
@@ -304,15 +325,15 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 //        bottomView.updateCartHeight()
 //    }
     
-//     // MARK: - Alert when the purchaseButtonTapped
-//     func purchaseButtonTapped() {
-//         let title = NSLocalizedString("modalTitle", comment: "")
-//         let message = NSLocalizedString("modalMessage", comment: "")
-//         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//         let confirmAction = UIAlertAction(title: "OK", style: .default, handler: { _ in print("Complete Payment") })
-//         alert.addAction(confirmAction)
-//         present(alert, animated: true)
-//     }  
+     // MARK: - Alert when the purchaseButtonTapped
+     func purchaseButtonTapped() {
+         let title = NSLocalizedString("modalTitle", comment: "")
+         let message = NSLocalizedString("modalMessage", comment: "")
+         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+         let confirmAction = UIAlertAction(title: "OK", style: .default, handler: { _ in print("Complete Payment") })
+         alert.addAction(confirmAction)
+         present(alert, animated: true)
+     }  
 
 }
 

@@ -8,6 +8,10 @@
 
 "modalTitle" = "결제 완료";
 "modalMessage" = "주문하신 내역이 결제 되었습니다!";
+"callModalTitle" = "도움";
+"callModalMessage" = "직원을 호출하시겠습니까?";
+"call" = "호출";
+"cancel" = "취소";
 "empty" = "장바구니가 비어있습니다.";
 
 "fishBun" = "붕어빵";
