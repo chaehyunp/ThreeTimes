@@ -18,7 +18,7 @@ class TotalPriceLabel: UIView {
     }()
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "\(self.price)\(NSLocalizedString("won", comment: ""))"
+        label.text = "\(formatWithComma(self.price))\(NSLocalizedString("won", comment: ""))"
         label.textColor = UIColor(named: "950")
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textAlignment = .right
@@ -49,6 +49,12 @@ class TotalPriceLabel: UIView {
     
     func updateLabel(to price: Int) {
         self.price = price
-        self.priceLabel.text = "\(self.price)\(NSLocalizedString("won", comment: ""))"
+        self.priceLabel.text = "\(formatWithComma(self.price))\(NSLocalizedString("won", comment: ""))"
+    }
+    
+    func formatWithComma(_ number: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal // 자릿수 쉼표 스타일
+        return formatter.string(from: NSNumber(value: number)) ?? "\(number)"
     }
 }

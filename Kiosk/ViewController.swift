@@ -62,14 +62,15 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 self.calculatePrice(index: index)
                 
             case "decrease":
-                if  self.bottomView.cartView.data[index].quantity >= 2 {
+                if  self.bottomView.cartView.data[index].quantity >= 1 {
                     self.bottomView.cartView.data[index].quantity -= 1
                 }
                 self.calculatePrice(index: index)
-//                // 0이 되면 삭제
-//                if  self.bottomView.cartView.data[index].quantity == 0 {
-//                    self.bottomView.cartView.data.remove(at: index)
-//                }
+                // 0이 되면 삭제
+                if  self.bottomView.cartView.data[index].quantity == 0 {
+                    self.bottomView.cartView.data.remove(at: index)
+                    bottomView.cartView.reloadData()
+                }
             case "delete":
                 self.bottomView.cartView.data.remove(at: index)
                 if self.bottomView.cartView.data.count != 0 {
@@ -93,6 +94,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         bottomView.buttons.emptyButtonTapped = {
             [weak self] in
             self?.bottomView.cartView.emptyCart()
+            self?.bottomView.updateCartHeight()
         }
         bottomView.snp.makeConstraints{ make in
             make.top.equalTo(pageControl.snp.bottom)
