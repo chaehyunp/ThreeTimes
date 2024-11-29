@@ -21,13 +21,13 @@ class EmptyButton: UIButton  {
         setTitle(NSLocalizedString("cancelAll", comment: ""), for: .normal)
         setTitleColor(.black, for: .normal)
         setTitleColor(.gray, for: .highlighted)
-        titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
-        backgroundColor = .white
+        titleLabel?.font = .systemFont(ofSize: 16, weight: .regular)
+        backgroundColor = UIColor(named: "950")
         layer.cornerRadius = 15
         tintColor = .black
         //검정 테두리 추가
         layer.borderColor = UIColor.black.cgColor
-        layer.borderWidth = 2
+        layer.borderWidth = 1
         layer.cornerRadius = 15
         //클로저콜백
         self.addTarget(self, action: #selector(emptyButtonTapped), for: .touchUpInside)
