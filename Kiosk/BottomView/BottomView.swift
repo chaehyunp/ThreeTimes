@@ -62,7 +62,8 @@ class BottomView: UIView {
     func updateCartHeight() {
         cartView.layoutIfNeeded()
         let cartHeight = cartView.contentSize.height
-        cartViewHeight.constant = cartHeight
+//        cartViewHeight.constant = cartHeight
+        cartViewHeight.constant = max(cartHeight, 50)
     }
     
     
