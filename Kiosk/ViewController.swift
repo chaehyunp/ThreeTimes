@@ -304,17 +304,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 //        bottomView.updateCartHeight()
 //    }
     
-//     // MARK: - Alert when the purchaseButtonTapped
-//     func purchaseButtonTapped() {
-//         let title = NSLocalizedString("modalTitle", comment: "")
-//         let message = NSLocalizedString("modalMessage", comment: "")
-//         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-//         let confirmAction = UIAlertAction(title: "OK", style: .default, handler: { _ in print("Complete Payment") })
-//         alert.addAction(confirmAction)
-//         present(alert, animated: true)
-//     }  
 
-}
 
 // MARK: - Custom Page Cell
 class PageCell: UICollectionViewCell {
