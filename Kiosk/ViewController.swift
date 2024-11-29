@@ -45,7 +45,9 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 //        setupTempButtons()
         
         // Initialize Filtered Data
-        filteredProducts = productCategories.flatMap { $0.value }
+//        filteredProducts = productCategories.flatMap { $0.value }
+        filteredProducts = ProductData.productCategories["fishBun"] ?? []
+        collectionView.reloadData()
         updatePageControl()
     }
     
@@ -156,7 +158,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     private func setupSegmentedControl() {
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(segmentChanged(_:)), for: .valueChanged)
-        
+
         view.addSubview(segmentedControl)
         segmentedControl.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(8)
@@ -232,12 +234,17 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     @objc private func segmentChanged(_ sender: UISegmentedControl) {
         let selectedCategory = ProductData.segmentedControlTitles[sender.selectedSegmentIndex]
         
-        if selectedCategory == "전체" {
-            filteredProducts = productCategories.flatMap { $0.value }
-        } else {
-            filteredProducts = productCategories[selectedCategory] ?? []
-        }
+//        if selectedCategory == "전체" {
+//            filteredProducts = productCategories.flatMap { $0.value }
+//        } else {
+//            filteredProducts = productCategories[selectedCategory] ?? []
+//        }
+//        
+//        collectionView.reloadData()
         
+        
+        filteredProducts = ProductData.productCategories[selectedCategory] ?? []
+        collectionView.setContentOffset(.zero, animated: false)
         collectionView.reloadData()
         updatePageControl()
     }
@@ -447,8 +454,8 @@ class PageCell: UICollectionViewCell {
         priceLabel.textColor = UIColor(named: "950")
         
         let button = UIButton()
-        if let buttonImage = UIImage(named: "addButtonIcon") {
-            button.setBackgroundImage(buttonImage, for: .normal)
+        if let buttonImage = UIImage(named: "IcPlus") {
+            button.setImage(buttonImage, for: .normal)
         }
         //버튼 액션 설정
         button.addTarget(self, action:#selector(didTapAddButton(_:)), for: .touchUpInside)
@@ -484,7 +491,7 @@ class PageCell: UICollectionViewCell {
         productView.addSubview(button)
         button.snp.makeConstraints { make in
             make.bottom.trailing.equalToSuperview().inset(8) // 오른쪽 아래에 8px 여백 설정
-            make.width.height.equalTo(34) // 버튼 크기 설정
+            make.width.height.equalTo(36) // 버튼 크기 설정
         }
         
         // 이미지 뷰 제약 설정

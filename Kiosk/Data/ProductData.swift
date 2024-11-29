@@ -8,7 +8,7 @@ struct Product: Hashable {//딕셔너리 사용을 위해 Hashable 준수_bom
 
 struct ProductData {
     static let productCategories: [String: [Product]] = [
-        "finshBun": [
+        "fishBun": [
             Product(img: "ImgFishBunRedBean", name: "fishBunRedBean", price: "1000"),
             Product(img: "ImgFishBunCustard", name: "fishBunCustard", price: "1000"),
             Product(img: "ImgFishBunCheese", name: "fishBunCheese", price: "1500"),
