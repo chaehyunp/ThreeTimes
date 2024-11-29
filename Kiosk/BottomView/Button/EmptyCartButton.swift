@@ -24,7 +24,7 @@ class EmptyButton: UIButton  {
         setTitleColor(.gray, for: .highlighted)
 
         titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        backgroundColor = UIColor(named: "950")
+        backgroundColor = UIColor(named: "50")
         layer.cornerRadius = 15
         tintColor = .black
         //검정 테두리 추가
