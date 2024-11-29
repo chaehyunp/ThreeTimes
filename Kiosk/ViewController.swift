@@ -98,6 +98,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         bottomView.buttons.emptyButtonTapped = {
             [weak self] in
             self?.bottomView.cartView.emptyCart()
+            self?.updatePriceAndQuantity()
             self?.bottomView.updateCartHeight()
         }
         bottomView.snp.makeConstraints{ make in
