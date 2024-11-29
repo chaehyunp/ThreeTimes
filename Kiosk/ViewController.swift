@@ -72,15 +72,16 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 }
                 self.calculatePrice(index: index)
                 // 0이 되면 삭제
+
                 if  self.bottomView.cartView.data[index].quantity == 0 {
                     self.bottomView.cartView.data.remove(at: index)
                     bottomView.cartView.reloadData()
+                    bottomView.cartView.checkRowEmpty()
+                    bottomView.updateCartHeight()
                 }
             case "delete":
                 self.bottomView.cartView.data.remove(at: index)
-                if self.bottomView.cartView.data.count != 0 {
-                    bottomView.cartView.reloadData()
-                }
+                bottomView.cartView.reloadData()
                 bottomView.cartView.checkRowEmpty()
                 bottomView.updateCartHeight()
             default:
@@ -99,6 +100,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         bottomView.buttons.emptyButtonTapped = {
             [weak self] in
             self?.bottomView.cartView.emptyCart()
+            self?.updatePriceAndQuantity()
             self?.bottomView.updateCartHeight()
         }
         bottomView.snp.makeConstraints{ make in
@@ -324,13 +326,6 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             return price
         }()
     }
-
-    //    //셀 삭제 메서드 연결
-    //    @objc private func removeLastProduct() {
-//        guard !bottomView.cartView.data.isEmpty else { return }
-//        bottomView.cartView.removeProduct(at: bottomView.cartView.data.count - 1)
-//        bottomView.updateCartHeight()
-//    }
     
      // MARK: - Alert when the purchaseButtonTapped
      func purchaseButtonTapped() {

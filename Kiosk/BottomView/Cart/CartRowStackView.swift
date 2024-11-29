@@ -21,7 +21,7 @@ class CartRowStackView: UIStackView {
         return label
     }()
     
-    private let minusButton: UIButton = {
+    let minusButton: UIButton = {
         let button = UIButton()
         if let buttonImage = UIImage(named: "IcMinus") {
               button.setBackgroundImage(buttonImage, for: .normal)
@@ -51,7 +51,7 @@ class CartRowStackView: UIStackView {
     
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.text = String(product.price)
+        label.text = "\(String(product.price)) \(NSLocalizedString("won", comment:""))"
         label.font = .systemFont(ofSize: 16)
         label.textColor = UIColor(named: "600")
         label.textAlignment = .right
@@ -94,7 +94,7 @@ class CartRowStackView: UIStackView {
         addArrangedSubview(productLabel)
         addArrangedSubview(quantityStackView)
         addArrangedSubview(priceLabel)
-        addArrangedSubview(deleteButton)
+//        addArrangedSubview(deleteButton)//삭제버튼 없앰.
         
         //버튼 액션 설정
         plusButton.addTarget(self, action: #selector(plusButtonTapped), for: .touchUpInside)
@@ -126,8 +126,26 @@ class CartRowStackView: UIStackView {
     func updateData(product: CartData) {
         self.product = product
         self.productLabel.text = product.product.name
-        self.priceLabel.text = String(product.price)
+        self.priceLabel.text = "\(formatWithComma(product.price)) ₩"
         self.quantityLabel.text = String(product.quantity)
+    }
+    
+    private func formatWithComma(_ number: Int) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal // 자릿수 쉼표 스타일
+        return formatter.string(from: NSNumber(value: number)) ?? "\(number)"
+    }
+    
+    func changeMinusToDelete() {
+        if let buttonImage = UIImage(named: "IcDelete") {
+            minusButton.setBackgroundImage(buttonImage, for: .normal)
+        }
+    }
+    
+    func resetMinusButton() {
+        if let buttonImage = UIImage(named: "IcMinus") {
+            minusButton.setBackgroundImage(buttonImage, for: .normal)
+        }
     }
     //버튼 전달
     @objc private func plusButtonTapped() {
