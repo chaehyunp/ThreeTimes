@@ -21,7 +21,7 @@ class PurchaseButton: UIButton  {
         setTitleColor(.white, for: .normal)
         setTitleColor(.lightGray, for: .highlighted)
         titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
-        backgroundColor = UIColor(red: 226/255, green: 114/255, blue: 0/255, alpha: 1.0)
+        backgroundColor = UIColor(named: "main")
         layer.cornerRadius = 15
         tintColor = .white
     }

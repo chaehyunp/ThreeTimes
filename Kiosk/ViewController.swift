@@ -335,7 +335,11 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
          let confirmAction = UIAlertAction(title: "OK", style: .default, handler: { _ in print("Complete Payment") })
          alert.addAction(confirmAction)
          present(alert, animated: true)
-     }  
+         
+         bottomView.cartView.emptyCart()
+         updatePriceAndQuantity()
+         bottomView.updateCartHeight()
+     }
 
 }
 
