@@ -3,10 +3,12 @@
 "total" = "총";
 "gae" = "개";
 "cancelAll" = "전체 취소";
-"payment" = "결제 하기";
+"pay" = "결제 하기";
+"payment" = "결제 금액";
 
 "modalTitle" = "결제 완료";
 "modalMessage" = "주문하신 내역이 결제 되었습니다!";
+"empty" = "장바구니가 비어있습니다.";
 
 "fishBun" = "붕어빵";
 "fishBunRedBean" = "팥 붕어빵";

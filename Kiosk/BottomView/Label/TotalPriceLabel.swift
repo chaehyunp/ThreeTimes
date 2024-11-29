@@ -10,21 +10,21 @@ import UIKit
 class TotalPriceLabel: UIView {
     private var purchaseLabel: UILabel = {
         let label = UILabel()
-        label.text = "결제금액"
-        label.textColor = .black
+        label.text = NSLocalizedString("total", comment: "")
+        label.textColor = UIColor(named: "950")
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
         label.textAlignment = .left
         return label
     }()
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "\(self.price)원"
-        label.textColor = .black
+        label.text = "\(self.price)\(NSLocalizedString("won", comment: ""))"
+        label.textColor = UIColor(named: "950")
         label.font = UIFont.systemFont(ofSize: 24, weight: .bold)
         label.textAlignment = .right
         return label
     }()
-    let price: Int = 0
+    var price: Int = 0
     
     init() {
         super.init(frame: .zero)
@@ -48,6 +48,7 @@ class TotalPriceLabel: UIView {
     }
     
     func updateLabel(to price: Int) {
-        //총 금액 변경 메서드
+        self.price = price
+        self.priceLabel.text = "\(self.price)\(NSLocalizedString("won", comment: ""))"
     }
 }

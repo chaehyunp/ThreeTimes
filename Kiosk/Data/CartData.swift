@@ -10,10 +10,12 @@
  */
 final class CartData {
     var quantity: Int = 1
+    var price: Int = 0
     var product: Product
     
     init(product: Product) {
         self.product = product
+        self.price = Int(product.price) ?? 999
     }
 //    
 //    //총 수량을 재계산 하는 메서드_bom

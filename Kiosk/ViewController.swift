@@ -7,7 +7,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
     // 2. 데이터 붙이기 - 일러스트 포함 OK
     // 3. 플러스 버튼 눌렀을때 아래에 상품 추가
     // 4. 바텀뷰 버튼 이벤트 - 전체 취소, 알러트
-    
+
     
     // MARK: - Properties
     private let scrollView = UIScrollView()
@@ -55,10 +55,17 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
             switch action {
             case "increase":
                 self.bottomView.cartView.data[index].quantity += 1
+                self.bottomView.cartView.data[index].price = {
+                    let price = self.bottomView.cartView.data[index].quantity * (Int(self.bottomView.cartView.data[index].product.price) ?? 0)
+                    return price
+                }()
+                self.calculatePrice(index: index)
+                
             case "decrease":
                 if  self.bottomView.cartView.data[index].quantity >= 2 {
                     self.bottomView.cartView.data[index].quantity -= 1
                 }
+                self.calculatePrice(index: index)
 //                // 0이 되면 삭제
 //                if  self.bottomView.cartView.data[index].quantity == 0 {
 //                    self.bottomView.cartView.data.remove(at: index)
@@ -74,6 +81,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 break
             }
 //             UI 업데이트
+            updatePriceAndQuantity()
             if action == "delete" || self.bottomView.cartView.data.isEmpty {
                 self.bottomView.cartView.reloadData() // 전체 갱신
                
@@ -82,21 +90,54 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
                 self.bottomView.cartView.reloadRows(at: [indexPath], with: .automatic) // 특정 셀만 갱신
             }
         }
+        bottomView.buttons.emptyButtonTapped = {
+            [weak self] in
+            self?.bottomView.cartView.emptyCart()
+        }
         bottomView.snp.makeConstraints{ make in
             make.top.equalTo(pageControl.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
-    
+   
     // MARK: - Setup Navigation Bar
     private func setupNavigationBar() {
-        navigationItem.title = "WinterDessert"
+        navigationItem.title = "WINDYJUNG"
+        
+//        let langButton = UIBarButtonItem(image: UIImage(systemName: "globe"),
+//                                                        style: .plain,
+//                                                        target: self,
+//                                                        action: #selector(langButtonTapped))
+//        langButton.tintColor = UIColor(named: "600")
+//                                         
+//        navigationItem.rightBarButtonItem = langButton
     }
+                                         
+//    @objc private func langButtonTapped() {
+//        let title = lang == .KO ? "Change to English?" : "한국어로 변경하시겠습니까?"
+//        let alert = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+//        
+//        let confirmAction = UIAlertAction(title: lang == .KO ? "Yes" : "예",
+//                                          style: .default) { _ in
+//                self.lang = self.lang == .KO ? .EN : .KO
+//                UserDefaults.standard.set([self.lang.rawValue], forKey: "AppLanguages")
+//                UserDefaults.standard.synchronize()
+//                self.setLanguage()
+//            }
+//            
+//            let cancelAction = UIAlertAction(title: self.lang == .KO ? "No" : "아니오",
+//                                             style: .cancel)
+//            
+//            alert.addAction(confirmAction)
+//            alert.addAction(cancelAction)
+//            self.present(alert, animated: true)
+//    }
+
+
     
     // MARK: - Setup ScrollView
     private func setupScrollView() {
         view.addSubview(scrollView)
-//        scrollView.backgroundColor = UIColor(named: "900") // 테스트 컬러
         scrollView.backgroundColor = UIColor(named: "100")
         scrollView.showsVerticalScrollIndicator = false
         
@@ -143,7 +184,7 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
-        layout.itemSize = CGSize(width: view.frame.width, height: 300)
+        layout.itemSize = CGSize(width: view.frame.width, height: 350)
         
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         
@@ -166,11 +207,10 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
 
     }
     
-    
     // MARK: - Setup Page Control
     private func setupPageControl() {
-        pageControl.currentPageIndicatorTintColor = .black
-        pageControl.pageIndicatorTintColor = .lightGray
+        pageControl.currentPageIndicatorTintColor = UIColor(named: "950")
+        pageControl.pageIndicatorTintColor = UIColor(named: "600")
         pageControl.addTarget(self, action: #selector(pageControlChanged(_:)), for: .valueChanged)
         
         contentView.addSubview(pageControl)
@@ -240,52 +280,46 @@ class ViewController: UIViewController, UICollectionViewDataSource, UICollection
         let pageIndex = round(scrollView.contentOffset.x / view.frame.width)
         pageControl.currentPage = Int(pageIndex)
     }
-    
-    //임시 추가 삭제 버튼들
-//    private func setupTempButtons() {
-//        let addButton = UIButton(type: .system)
-//        addButton.setTitle("상품 추가", for: .normal)
-//        addButton.addTarget(self, action: #selector(addProduct), for: .touchUpInside)
-//        
-//        let deleteButton = UIButton(type: .system)
-//        deleteButton.setTitle("상품 삭제", for: .normal)
-//        deleteButton.addTarget(self, action: #selector(removeLastProduct), for: .touchUpInside)
-//        
-//        let buttonStack = UIStackView(arrangedSubviews: [addButton, deleteButton])
-//        buttonStack.axis = .horizontal
-//        buttonStack.spacing = 20
-//        buttonStack.alignment = .center
-//        buttonStack.distribution = .equalSpacing
-//        
-//        scrollView.addSubview(buttonStack)
-//        buttonStack.translatesAutoresizingMaskIntoConstraints = false
-//        
-//        NSLayoutConstraint.activate([
-//            buttonStack.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 20),
-//            buttonStack.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-    //        ])
-    //    }
-    
-    //셀 추가 메서드 연결
+    // MARK: button method
+    //금액, 수량 반영
+    private func updatePriceAndQuantity() {
+        self.calculateTotalPrice()
+        self.calculateTotalQuantity()
+    }
+    //총 수량 계산
+    private func calculateTotalQuantity() {
+        let totalQuantity = self.bottomView.cartView.data.map { $0.quantity }.reduce(0, +)
+        self.bottomView.quantityLabel.updateLabel(to: totalQuantity)
+        calculateTotalPrice()
+    }
+    //총 금액 계산
+    private func calculateTotalPrice() {
+        let totalPrice = self.bottomView.cartView.data.map { $0.price }.reduce(0, +)
+        self.bottomView.priceLabel.updateLabel(to: totalPrice)
+    }
+    //상품 추가
     private func addProduct(product: Product) {
         let newProduct = CartData(product: product)//새로운 셀 데이터
         if let existingIndex = bottomView.cartView.data.firstIndex(where: { $0.product.name == product.name }) {
             // 이미 존재하는 경우, 해당 CartData의 quantity를 증가
             bottomView.cartView.data[existingIndex].quantity += 1
             bottomView.cartView.reloadData()
+            self.calculatePrice(index: existingIndex)
+            
         } else {
             // 존재하지 않는 경우, 새로운 상품 추가
             bottomView.cartView.addProduct(newProduct)
         }
+        updatePriceAndQuantity()
         bottomView.updateCartHeight()
     }
-    //    //셀 삭제 메서드 연결
-    //    @objc private func removeLastProduct() {
-//        guard !bottomView.cartView.data.isEmpty else { return }
-//        bottomView.cartView.removeProduct(at: bottomView.cartView.data.count - 1)
-//        bottomView.updateCartHeight()
-//    }
-    
+    //금액 계산
+    private func calculatePrice(index: Int) {
+        self.bottomView.cartView.data[index].price = {
+            let price = self.bottomView.cartView.data[index].quantity * (Int(self.bottomView.cartView.data[index].product.price) ?? 0)
+            return price
+        }()
+    }
 }
 
 // MARK: - Custom Page Cell
@@ -382,13 +416,20 @@ class PageCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFit
         
         // 라벨 설정
-        let label = UILabel()
+        let nameLabel = UILabel()
         
-        label.text = "\(product.name)\n\(product.price)"
-        label.textAlignment = .left
-        label.font = .systemFont(ofSize: 14)
-        label.textColor = .black
-        label.numberOfLines = 0
+        nameLabel.text = NSLocalizedString(product.name, comment: "")
+        nameLabel.textAlignment = .left
+        nameLabel.font = .systemFont(ofSize: 14)
+        nameLabel.textColor = UIColor(named: "950")
+        
+        let priceLabel = UILabel()
+        let won = NSLocalizedString("won", comment: "")
+        
+        priceLabel.text = "\(product.price)\(won)"
+        priceLabel.textAlignment = .left
+        priceLabel.font = .boldSystemFont(ofSize: 14)
+        priceLabel.textColor = UIColor(named: "950")
         
         let button = UIButton()
         if let buttonImage = UIImage(named: "addButtonIcon") {
@@ -402,13 +443,14 @@ class PageCell: UICollectionViewCell {
         // 이미지 뷰와 라벨을 세로로 배치할 스택 뷰 설정
         let productStackView = UIStackView()
         productStackView.axis = .vertical
-        productStackView.spacing = 8
+        productStackView.spacing = 3
         productStackView.alignment = .fill
         productStackView.distribution = .fill
         //        productStackView.backgroundColor = .white
         // 이미지뷰와 라벨을 스택뷰에 추가
         productStackView.addArrangedSubview(imageView)
-        productStackView.addArrangedSubview(label)
+        productStackView.addArrangedSubview(nameLabel)
+        productStackView.addArrangedSubview(priceLabel)
         
         // 상품 뷰에 스택뷰 추가
         productView.addSubview(productStackView)
@@ -432,7 +474,7 @@ class PageCell: UICollectionViewCell {
         
         // 이미지 뷰 제약 설정
         imageView.snp.makeConstraints { make in
-            make.height.equalTo(60) // 이미지 뷰의 고정 높이
+            make.height.equalTo(90) // 이미지 뷰의 고정 높이
             
             //            let size = productStackView.frame.height
             //            make.height.equalTo(size)
@@ -440,8 +482,12 @@ class PageCell: UICollectionViewCell {
         }
         
         // 라벨 제약 설정
-        label.snp.makeConstraints { make in
-            make.height.equalTo(40) // 라벨의 고정 높이
+        nameLabel.snp.makeConstraints { make in
+            make.height.equalTo(20)
+        }
+        
+        priceLabel.snp.makeConstraints { make in
+            make.height.equalTo(20)// 라벨의 고정 높이
         }
         return productView
     }

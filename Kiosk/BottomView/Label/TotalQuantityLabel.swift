@@ -7,7 +7,7 @@
 import UIKit
 
 class TotalQuantityLabel: UILabel {
-    let quantity: Int = 0
+    var quantity: Int = 0
     init() {
         super.init(frame: .zero)
         setupLabel()
@@ -18,13 +18,16 @@ class TotalQuantityLabel: UILabel {
     }
     //레이블 셋업
     private func setupLabel() {
-        text = "총 \(quantity)개"
-        textColor = .black
+        updateLabel(to: 0)
+        textColor = UIColor(named: "950")
         font = UIFont.systemFont(ofSize: 18, weight: .bold)
         textAlignment = .left
     }
     
     func updateLabel(to quantity: Int) {
-        //총 수량 변경 메서드
+        self.quantity = quantity
+        let total = NSLocalizedString("total", comment: "")
+        let gae = NSLocalizedString("gae", comment: "")
+        self.text = "\(total) \(self.quantity)\(gae)"
     }
 }

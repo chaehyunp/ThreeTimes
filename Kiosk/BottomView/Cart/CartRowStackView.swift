@@ -51,7 +51,7 @@ class CartRowStackView: UIStackView {
     
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.text = product.product.price
+        label.text = String(product.price)
         label.font = .systemFont(ofSize: 16)
         label.textColor = UIColor(named: "600")
         label.textAlignment = .right
@@ -102,6 +102,10 @@ class CartRowStackView: UIStackView {
         deleteButton.addTarget(self, action: #selector(deleteButtonTapped), for: .touchUpInside)
         
         // 레이아웃 설정
+        productLabel.snp.makeConstraints{ make in
+            make.width.equalTo(120)
+        }
+        
         minusButton.snp.makeConstraints { make in
             make.width.height.equalTo(30)
         }
@@ -122,7 +126,7 @@ class CartRowStackView: UIStackView {
     func updateData(product: CartData) {
         self.product = product
         self.productLabel.text = product.product.name
-        self.priceLabel.text = product.product.price
+        self.priceLabel.text = String(product.price)
         self.quantityLabel.text = String(product.quantity)
     }
     //버튼 전달

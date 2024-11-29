@@ -3,10 +3,12 @@
 "total" = "Total";
 "gae" = "";
 "cancelAll" = "Cancel all";
+"pay" = "Pay";
 "payment" = "Payment";
 
 "modalTitle" = "Complete payment";
 "modalMessage" = "Your order has been paid for!";
+"empty" = "Empty";
 
 "fishBun" = "FishBun";
 "fishBunRedBean" = "Red bean Flavor";
